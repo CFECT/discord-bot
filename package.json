@@ -1,0 +1,22 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "O bot do Discord da CFECT",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CFECT/discord-bot.git"
+  },
+  "author": "CFECT",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CFECT/discord-bot/issues"
+  },
+  "homepage": "https://github.com/CFECT/discord-bot#readme",
+  "dependencies": {
+    "discord.js": "^14.15.2"
+  }
+}
