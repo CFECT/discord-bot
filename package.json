@@ -4,7 +4,8 @@
   "description": "O bot do Discord da CFECT",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,10 @@
   },
   "homepage": "https://github.com/CFECT/discord-bot#readme",
   "dependencies": {
-    "discord.js": "^14.15.2"
+    "discord.js": "^14.15.2",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
   }
 }
