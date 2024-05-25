@@ -19,7 +19,8 @@
   "homepage": "https://github.com/CFECT/discord-bot#readme",
   "dependencies": {
     "discord.js": "^14.15.2",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "typescript": "^5.4.5"

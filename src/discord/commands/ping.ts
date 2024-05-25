@@ -1,5 +1,5 @@
 import type { CommandInteraction } from "discord.js";
-import { Command } from "../Command";
+import { Command } from "../registry/Command";
 
 export default class PingCommand extends Command {
     constructor() {

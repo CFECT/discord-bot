@@ -8,6 +8,12 @@ const guildId = process.env["COMMANDS_GUILD_ID"];
 
 const commands = [
 	new SlashCommandBuilder().setName('ping').setDescription('Check the bot ping'),
+
+	new SlashCommandBuilder().setName('nome-de-faina').setDescription('Efetua o pedido de mudança de nome de faina no servidor')
+		.addStringOption(option => option.setName('nome').setDescription('Novo nome de faina').setRequired(true)),
+	
+	new SlashCommandBuilder().setName('send-verify-message').setDescription('Sends the message to setup the verification channel')
+		.setDefaultMemberPermissions(0),
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: '10' }).setToken(token!);
