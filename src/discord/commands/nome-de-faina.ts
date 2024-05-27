@@ -1,4 +1,4 @@
-import { CommandInteraction, ButtonBuilder, ButtonStyle, ActionRowBuilder } from "discord.js";
+import { CommandInteraction, ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } from "discord.js";
 import { Command } from "../registry/Command";
 import Database from "../../Database";
 import Utils from "../../Utils"
@@ -39,8 +39,13 @@ export default class NomeDeFainaCommand extends Command {
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(acceptButton)
             .addComponents(declineButton);
-        const text = `# Pedido de Mudança de Nome #${id}\nPedido de mudança de nome de ${interaction.user} para ${newName}`;
-        await channel.send({ content: text, components: [actionRow] });
+
+        const embed = new EmbedBuilder()
+            .setTitle(`Pedido de Mudança de Nome #${id}`)
+            .setDescription(`Pedido de mudança de nome de ${interaction.user} para ${newName}`)
+            .setAuthor({ name: `${interaction.user.tag} (${interaction.user.id})`, iconURL: interaction.user.displayAvatarURL() });
+
+        await channel.send({ embeds: [embed], components: [actionRow] });
 
         await interaction.reply({
             content: `Pedido de mudança de nome com ID ${id} efetuado com sucesso! Aguarde a aprovação por parte de um elemento da Comissão de Faina.`,

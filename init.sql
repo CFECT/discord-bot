@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS Users (
     NMec INTEGER NOT NULL,
     Matricula TEXT NOT NULL,
     NomeDeFaina TEXT NOT NULL,
-    FainaCompleta BOOLEAN NOT NULL
+    FainaCompleta BOOLEAN NOT NULL,
+    NumeroAluviao TEXT DEFAULT "?" NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Verifications (
