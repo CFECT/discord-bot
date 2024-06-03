@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS Users (
     DiscordID TEXT PRIMARY KEY,
     Nome TEXT NOT NULL,
     Sexo TEXT NOT NULL,
-    NMec INTEGER NOT NULL,
+    NMec TEXT NOT NULL,
     Matricula TEXT NOT NULL,
     NomeDeFaina TEXT NOT NULL,
     FainaCompleta BOOLEAN NOT NULL,
@@ -14,9 +14,10 @@ CREATE TABLE IF NOT EXISTS Verifications (
     DiscordID TEXT NOT NULL,
     Nome TEXT NOT NULL,
     Sexo TEXT NOT NULL,
-    NMec INTEGER NOT NULL,
+    NMec TEXT NOT NULL,
     Matricula TEXT NOT NULL,
-    NomeDeFaina TEXT NOT NULL
+    NomeDeFaina TEXT NOT NULL,
+    InteractionMessageID TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS NameChanges (

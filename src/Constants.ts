@@ -27,6 +27,12 @@ class Constants {
         ACCEPTED: "#00FF00",
         DENIED: "#FF0000",
     }
+
+    static ROLES = {
+        ALUVIAO: "1231389213707206706",
+        VETERANO: "1231389146367393882",
+        COMISSAO_DE_FAINA: "1231391543856992376"
+    }
 }
 
 export default Constants;

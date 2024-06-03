@@ -11,7 +11,10 @@ const commands = [
 
 	new SlashCommandBuilder().setName('nome-de-faina').setDescription('Efetua o pedido de mudança de nome de faina no servidor')
 		.addStringOption(option => option.setName('nome').setDescription('Novo nome de faina').setRequired(true)),
-	
+
+    new SlashCommandBuilder().setName('completar-faina').setDescription('Marca/desmarcar a faina de um utilizador como completa')
+        .addUserOption(option => option.setName('utilizador').setDescription('Utilizador cuja faina será marcada/desmarcada como completa').setRequired(true)),
+
 	new SlashCommandBuilder().setName('send-verify-message').setDescription('Sends the message to setup the verification channel')
 		.setDefaultMemberPermissions(0),
 ].map(command => command.toJSON());

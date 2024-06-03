@@ -2,28 +2,30 @@ import { ButtonInteraction, ModalBuilder, TextInputBuilder, ActionRowBuilder, Te
 import { Button } from "../registry/Button";
 import Database from "../../Database";
 
-export default class ShowVerificationModalButton extends Button {
+export default class AcceptVerificationModalButton extends Button {
     constructor() {
-        super("showVerificationModal");
+        super("acceptVerification-", true);
     }
 
     public async execute(interaction: ButtonInteraction): Promise<void> {
-        const user = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [interaction.user.id]);
-        if (user) {
-            await interaction.reply({ content: "Já tens uma conta associada.", ephemeral: true });
-            return;
-        }
-
         const modal = new ModalBuilder()
             .setTitle("Verificação")
-            .setCustomId("verificationModal");
+            .setCustomId("acceptVerificationModal-" + interaction.customId.split("-")[1]);
+
+        await Database.run("UPDATE Verifications SET InteractionMessageID = ? WHERE ID = ?", [interaction.message.id, interaction.customId.split("-")[1]]);
+        const user = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[1]]);
+        if (!user) {
+            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
+            return;
+        }
 
         const inputNome = new TextInputBuilder()
             .setLabel("Nome")
             .setCustomId("nome")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o teu nome")
+            .setPlaceholder("Introduz o nome")
+            .setValue(user.Nome);
         const actionRowNome = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNome);
 
         const inputNomeFaina = new TextInputBuilder()
@@ -31,7 +33,8 @@ export default class ShowVerificationModalButton extends Button {
             .setCustomId("nome-faina")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o teu nome de faina (sem rank)")
+            .setPlaceholder("Introduz o nome de faina")
+            .setValue(user.NomeDeFaina);
         const actionRowNomeFaina = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNomeFaina);
 
         const inputNumero = new TextInputBuilder()
@@ -39,7 +42,8 @@ export default class ShowVerificationModalButton extends Button {
             .setCustomId("numero")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o teu número mecanográfico")
+            .setPlaceholder("Introduz o número mecanográfico")
+            .setValue(user.NMec)
         const actionRowNumero = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNumero);
 
         const inputMatricula = new TextInputBuilder()
@@ -47,7 +51,8 @@ export default class ShowVerificationModalButton extends Button {
             .setCustomId("matricula")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz a tua matrícula")
+            .setPlaceholder("Introduz a matrícula")
+            .setValue(user.Matricula)
             .setMinLength(1)
             .setMaxLength(1)
         const actionRowMatricula = new ActionRowBuilder<TextInputBuilder>().addComponents(inputMatricula);
@@ -57,7 +62,8 @@ export default class ShowVerificationModalButton extends Button {
             .setCustomId("sexo")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o teu sexo (M/F)")
+            .setPlaceholder("Introduz o sexo (M/F)")
+            .setValue(user.Sexo)
             .setMinLength(1)
             .setMaxLength(1)
         const actionRowSexo = new ActionRowBuilder<TextInputBuilder>().addComponents(inputSexo);

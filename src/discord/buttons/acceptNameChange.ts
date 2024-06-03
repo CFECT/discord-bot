@@ -1,7 +1,6 @@
 import { ButtonInteraction, EmbedBuilder, GuildMember } from "discord.js";
 import { Button } from "../registry/Button";
 import Database from "../../Database";
-
 import Constants from "../../Constants";
 
 export default class AcceptNameChange extends Button {

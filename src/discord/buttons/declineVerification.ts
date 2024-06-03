@@ -3,25 +3,25 @@ import { Button } from "../registry/Button";
 import Database from "../../Database";
 import Constants from "../../Constants";
 
-export default class DeclineNameChange extends Button {
+export default class DeclineVerification extends Button {
     constructor() {
-        super("declineNameChange-", true);
+        super("declineVerification-", true);
     }
 
     public async execute(interaction: ButtonInteraction): Promise<void> {
         const id = parseInt(interaction.customId.split("-")[1]);
-        const nameChange = await Database.get("SELECT * FROM NameChanges WHERE ID = ?", [id]);
-        if (!nameChange) {
-            await interaction.channel?.send("Name change request not found!");
+        const verification = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [id]);
+        if (!verification) {
+            await interaction.channel?.send("Verification request not found!");
             return;
         }
-        const user = await interaction.guild?.members.fetch(nameChange.DiscordID);
+        const user = await interaction.guild?.members.fetch(verification.DiscordID);
         if (!user) {
             await interaction.followUp({ content: "User not found!", ephemeral: true });
             return;
         }
 
-        await Database.run("DELETE FROM NameChanges WHERE ID = ?", [id]);
+        await Database.run("DELETE FROM Verifications WHERE ID = ?", [id]);
 
         const originalEmbed = interaction.message.embeds[0].toJSON();
         const newEmbed = new EmbedBuilder(originalEmbed)
@@ -32,6 +32,6 @@ export default class DeclineNameChange extends Button {
             });
 
         await interaction.update({ embeds: [newEmbed], components: [] });
-        await interaction.followUp({ content: `Name change rejected!`, ephemeral: true });
+        await interaction.followUp({ content: `Verification rejected!`, ephemeral: true });
     }
 }

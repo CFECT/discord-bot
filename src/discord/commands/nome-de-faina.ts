@@ -2,7 +2,6 @@ import { CommandInteraction, ButtonBuilder, ButtonStyle, ActionRowBuilder, Embed
 import { Command } from "../registry/Command";
 import Database from "../../Database";
 import Utils from "../../Utils"
-
 import Constants from "../../Constants";
 
 export default class NomeDeFainaCommand extends Command {
