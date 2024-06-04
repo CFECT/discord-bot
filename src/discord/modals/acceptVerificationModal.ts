@@ -70,6 +70,12 @@ export default class AcceptVerificationModal extends Modal {
             .setStyle(ButtonStyle.Success);
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(buttonYes)
+
+        const user = interaction.client.users.cache.get(discordId);
+        if (user) {
+            await user.send(`A tua verificação foi aceite!`);
+        }
+
         await interaction.reply({ content: `Verificação aceite!\nPara marcar a faina como completa, clique no botão abaixo`, ephemeral: true, components: [actionRow]});
     }
 }

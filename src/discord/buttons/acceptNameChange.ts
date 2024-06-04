@@ -12,16 +12,16 @@ export default class AcceptNameChange extends Button {
         const id = parseInt(interaction.customId.split("-")[1]);
         const nameChange = await Database.get("SELECT * FROM NameChanges WHERE ID = ?", [id]);
         if (!nameChange) {
-            await interaction.channel?.send("Name change request not found!");
+            await interaction.channel?.send("Pedido de mudança de nome não encontrado!");
             return;
         }
         const user = await interaction.guild?.members.fetch(nameChange.DiscordID);
         if (!user) {
-            await interaction.followUp({ content: "User not found!", ephemeral: true });
+            await interaction.followUp({ content: "Utilizador não encontrado!", ephemeral: true });
             return;
         }
         if (!user.manageable) {
-            await interaction.followUp({ content: "I don't have permission to change this user's name!", ephemeral: true });
+            await interaction.followUp({ content: "Não tenho permissão para alterar o nome do utilizador!", ephemeral: true });
             return;
         }
 
@@ -37,7 +37,9 @@ export default class AcceptNameChange extends Button {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
+        await user.send(`O teu pedido de mudança de nome foi aceite!\nNome alterado para: \`${nameChange.NomeNovo}\`.`).catch(() => {});
+
         await interaction.update({ embeds: [newEmbed], components: [] });
-        await interaction.followUp({ content: `Name change accepted!`, ephemeral: true});
+        await interaction.followUp({ content: `Mudança de nome aceite!`, ephemeral: true});
     }
 }

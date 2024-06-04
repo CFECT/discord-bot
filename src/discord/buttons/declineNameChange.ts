@@ -12,12 +12,12 @@ export default class DeclineNameChange extends Button {
         const id = parseInt(interaction.customId.split("-")[1]);
         const nameChange = await Database.get("SELECT * FROM NameChanges WHERE ID = ?", [id]);
         if (!nameChange) {
-            await interaction.channel?.send("Name change request not found!");
+            await interaction.channel?.send("Pedido de mudança de nome não encontrado!");
             return;
         }
         const user = await interaction.guild?.members.fetch(nameChange.DiscordID);
         if (!user) {
-            await interaction.followUp({ content: "User not found!", ephemeral: true });
+            await interaction.followUp({ content: "Utilizador não encontrado!", ephemeral: true });
             return;
         }
 
@@ -31,7 +31,9 @@ export default class DeclineNameChange extends Button {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
+        await user.send(`O pedido de mudança de nome para \`${nameChange.NewName}\` foi rejeitado!`);
+
         await interaction.update({ embeds: [newEmbed], components: [] });
-        await interaction.followUp({ content: `Name change rejected!`, ephemeral: true });
+        await interaction.followUp({ content: `Mudança de nome rejeitada!`, ephemeral: true });
     }
 }

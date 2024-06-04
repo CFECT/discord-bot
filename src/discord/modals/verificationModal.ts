@@ -18,7 +18,7 @@ export default class VerificationModal extends Modal {
 
         const channel = interaction.guild?.channels.cache.get(Constants.VERIFICATION_CHANNEL_ID);
         if (!channel || !channel.isTextBased()) {
-            await interaction.reply({ content: "Can't find the verification channel. Please contact the admins.", ephemeral: true });
+            await interaction.reply({ content: "O canal de verificações não foi encontrado. Por favor, contacte um administrador.", ephemeral: true });
             return;
         }
 
@@ -39,7 +39,7 @@ export default class VerificationModal extends Modal {
         let id = await Database.getAll("SELECT * FROM Verifications WHERE DiscordID = ? AND Nome = ? AND Sexo = ? AND NMec = ? AND Matricula = ? AND NomeDeFaina = ?",
                                        [discordId, nome.value, sexo.value, numero.value, matricula.value, nomeDeFaina.value]).catch(() => { return null; });
         if (!id || id.length === 0) {
-            await interaction.reply({ content: "Ocorreu um erro ao efetuar o pedido de mudança de nome. Por favor, contate um administrador.", ephemeral: true });
+            await interaction.reply({ content: "Ocorreu um erro ao efetuar o pedido de verificação. Por favor, contate um administrador.", ephemeral: true });
             return;
         }
 

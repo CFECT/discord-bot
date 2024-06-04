@@ -12,12 +12,12 @@ export default class DeclineVerification extends Button {
         const id = parseInt(interaction.customId.split("-")[1]);
         const verification = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [id]);
         if (!verification) {
-            await interaction.channel?.send("Verification request not found!");
+            await interaction.channel?.send("Pedido de verificação não encontrado!");
             return;
         }
         const user = await interaction.guild?.members.fetch(verification.DiscordID);
         if (!user) {
-            await interaction.followUp({ content: "User not found!", ephemeral: true });
+            await interaction.followUp({ content: "Utilizador não encontrado!", ephemeral: true });
             return;
         }
 
@@ -31,7 +31,9 @@ export default class DeclineVerification extends Button {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
+        await user.send(`O teu pedido de verificação foi rejeitado! Por favor tenta novamente com os dados corretos.`);
+
         await interaction.update({ embeds: [newEmbed], components: [] });
-        await interaction.followUp({ content: `Verification rejected!`, ephemeral: true });
+        await interaction.followUp({ content: `Verificação rejeitada!`, ephemeral: true });
     }
 }
