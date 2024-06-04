@@ -10,7 +10,7 @@ export default class NomeDeFainaCommand extends Command {
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
-        let newName = await Utils.getFormattedName(interaction.user.id, interaction.options.get('nome')?.value as string);
+        let newName = interaction.options.get('nome')?.value;
 
         const channel = interaction.guild?.channels.cache.get(Constants.VERIFICATION_CHANNEL_ID);
         if (!channel || !channel.isTextBased()) {
@@ -39,9 +39,11 @@ export default class NomeDeFainaCommand extends Command {
             .addComponents(acceptButton)
             .addComponents(declineButton);
 
+        const formattedNewName = await Utils.getFormattedName(interaction.user.id, newName as string);
+
         const embed = new EmbedBuilder()
             .setTitle(`Pedido de Mudança de Nome #${id}`)
-            .setDescription(`Pedido de mudança de nome de ${interaction.user} para ${newName}`)
+            .setDescription(`Pedido de mudança de nome de ${interaction.user} para ${formattedNewName}`)
             .setAuthor({ name: `${interaction.user.tag} (${interaction.user.id})`, iconURL: interaction.user.displayAvatarURL() });
 
         await channel.send({ embeds: [embed], components: [actionRow] });

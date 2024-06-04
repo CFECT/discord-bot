@@ -24,7 +24,6 @@ export default class AcceptVerificationModalButton extends Button {
             .setCustomId("nome")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o nome")
             .setValue(user.Nome);
         const actionRowNome = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNome);
 
@@ -33,7 +32,6 @@ export default class AcceptVerificationModalButton extends Button {
             .setCustomId("nome-faina")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o nome de faina")
             .setValue(user.NomeDeFaina);
         const actionRowNomeFaina = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNomeFaina);
 
@@ -42,7 +40,6 @@ export default class AcceptVerificationModalButton extends Button {
             .setCustomId("numero")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o número mecanográfico")
             .setValue(user.NMec)
         const actionRowNumero = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNumero);
 
@@ -51,7 +48,6 @@ export default class AcceptVerificationModalButton extends Button {
             .setCustomId("matricula")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz a matrícula")
             .setValue(user.Matricula)
             .setMinLength(1)
             .setMaxLength(1)
@@ -62,7 +58,6 @@ export default class AcceptVerificationModalButton extends Button {
             .setCustomId("sexo")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o sexo (M/F)")
             .setValue(user.Sexo)
             .setMinLength(1)
             .setMaxLength(1)

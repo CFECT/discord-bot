@@ -2,6 +2,7 @@ import { ButtonInteraction, EmbedBuilder, GuildMember } from "discord.js";
 import { Button } from "../registry/Button";
 import Database from "../../Database";
 import Constants from "../../Constants";
+import Utils from "../../Utils";
 
 export default class AcceptNameChange extends Button {
     constructor() {
@@ -27,7 +28,8 @@ export default class AcceptNameChange extends Button {
 
         await Database.run("UPDATE Users SET NomeDeFaina = ? WHERE DiscordID = ?", [nameChange.NomeNovo, nameChange.DiscordID]);
         await Database.run("DELETE FROM NameChanges WHERE ID = ?", [id]);
-        await user.setNickname(nameChange.NomeNovo);
+        const formattedName = await Utils.getFormattedName(nameChange.DiscordID, nameChange.NomeNovo);
+        await user.setNickname(formattedName, "Mudança de nome efetuada pela Comissão de Faina");
 
         const originalEmbed = interaction.message.embeds[0].toJSON();
         const newEmbed = new EmbedBuilder(originalEmbed)
@@ -37,7 +39,7 @@ export default class AcceptNameChange extends Button {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
-        await user.send(`O teu pedido de mudança de nome foi aceite!\nNome alterado para: \`${nameChange.NomeNovo}\`.`).catch(() => {});
+        await user.send(`O teu pedido de mudança de nome foi aceite!\nNome alterado para: \`${formattedName}\`.`).catch(() => {});
 
         await interaction.update({ embeds: [newEmbed], components: [] });
         await interaction.followUp({ content: `Mudança de nome aceite!`, ephemeral: true});

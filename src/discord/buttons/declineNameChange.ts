@@ -2,6 +2,7 @@ import { ButtonInteraction, EmbedBuilder, GuildMember } from "discord.js";
 import { Button } from "../registry/Button";
 import Database from "../../Database";
 import Constants from "../../Constants";
+import Utils from "../../Utils";
 
 export default class DeclineNameChange extends Button {
     constructor() {
@@ -21,6 +22,7 @@ export default class DeclineNameChange extends Button {
             return;
         }
 
+        const formattedName = Utils.getFormattedName(nameChange.DiscordID, nameChange.NomeNovo);
         await Database.run("DELETE FROM NameChanges WHERE ID = ?", [id]);
 
         const originalEmbed = interaction.message.embeds[0].toJSON();
@@ -31,7 +33,7 @@ export default class DeclineNameChange extends Button {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
-        await user.send(`O pedido de mudança de nome para \`${nameChange.NewName}\` foi rejeitado!`).catch(() => { });
+        await user.send(`O teu pedido de mudança de nome para \`${formattedName}\` foi rejeitado!`).catch(() => { });
 
         await interaction.update({ embeds: [newEmbed], components: [] });
         await interaction.followUp({ content: `Mudança de nome rejeitada!`, ephemeral: true });

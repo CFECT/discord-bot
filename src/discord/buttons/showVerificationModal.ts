@@ -29,7 +29,7 @@ export default class ShowVerificationModalButton extends Button {
             .setCustomId("nome")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o teu nome")
+            .setPlaceholder("Introduz o teu nome (primeito e último)")
             .setMaxLength(50);
         const actionRowNome = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNome);
 
@@ -57,7 +57,7 @@ export default class ShowVerificationModalButton extends Button {
             .setCustomId("matricula")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz a tua matrícula")
+            .setPlaceholder("Introduz a tua matrícula (1-9, para 10 ou mais, introduz 0)")
             .setMinLength(1)
             .setMaxLength(1)
         const actionRowMatricula = new ActionRowBuilder<TextInputBuilder>().addComponents(inputMatricula);
