@@ -31,7 +31,7 @@ export default class DeclineNameChange extends Button {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
-        await user.send(`O pedido de mudança de nome para \`${nameChange.NewName}\` foi rejeitado!`);
+        await user.send(`O pedido de mudança de nome para \`${nameChange.NewName}\` foi rejeitado!`).catch(() => { });
 
         await interaction.update({ embeds: [newEmbed], components: [] });
         await interaction.followUp({ content: `Mudança de nome rejeitada!`, ephemeral: true });

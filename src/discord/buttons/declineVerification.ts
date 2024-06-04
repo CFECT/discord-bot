@@ -31,7 +31,7 @@ export default class DeclineVerification extends Button {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
-        await user.send(`O teu pedido de verificação foi rejeitado! Por favor tenta novamente com os dados corretos.`);
+        await user.send(`O teu pedido de verificação foi rejeitado! Por favor tenta novamente com os dados corretos.`).catch(() => { });
 
         await interaction.update({ embeds: [newEmbed], components: [] });
         await interaction.followUp({ content: `Verificação rejeitada!`, ephemeral: true });

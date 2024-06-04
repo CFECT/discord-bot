@@ -73,7 +73,7 @@ export default class AcceptVerificationModal extends Modal {
 
         const user = interaction.client.users.cache.get(discordId);
         if (user) {
-            await user.send(`A tua verificação foi aceite!`);
+            await user.send(`A tua verificação foi aceite!`).catch(() => { });
         }
 
         await interaction.reply({ content: `Verificação aceite!\nPara marcar a faina como completa, clique no botão abaixo`, ephemeral: true, components: [actionRow]});
