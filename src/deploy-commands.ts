@@ -15,6 +15,9 @@ const commands = [
     new SlashCommandBuilder().setName('completar-faina').setDescription('Marca/desmarcar a faina de um utilizador como completa')
         .addUserOption(option => option.setName('utilizador').setDescription('Utilizador cuja faina será marcada/desmarcada como completa').setRequired(true)),
 
+    new SlashCommandBuilder().setName('edit-user').setDescription('Edita os dados de um utilizador')
+        .addUserOption(option => option.setName('utilizador').setDescription('Utilizador a editar').setRequired(true)),
+
 	new SlashCommandBuilder().setName('send-verify-message').setDescription('Sends the message to setup the verification channel')
 		.setDefaultMemberPermissions(0),
 ].map(command => command.toJSON());

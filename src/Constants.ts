@@ -1,4 +1,7 @@
 import { ColorResolvable } from "discord.js"
+import dotenv from "dotenv";
+
+dotenv.config();
 
 type RanksType = {
     [key: number]: {
@@ -21,7 +24,7 @@ class Constants {
         5: {'M': 'Mestre', 'F': 'Mestre'}
     };
 
-    static VERIFICATION_CHANNEL_ID = "1243703265363886190";
+    static VERIFICATION_CHANNEL_ID = process.env.VERIFICATIONS_CHANNEL_ID as string;
 
     static EMBED_COLORS: EmbedColorsType = {
         ACCEPTED: "#00FF00",
@@ -29,9 +32,9 @@ class Constants {
     }
 
     static ROLES = {
-        ALUVIAO: "1231389213707206706",
-        VETERANO: "1231389146367393882",
-        COMISSAO_DE_FAINA: "1231391543856992376"
+        ALUVIAO: process.env.ALUVIAO_ROLE_ID as string,
+        VETERANO: process.env.VETERANO_ROLE_ID as string,
+        COMISSAO_DE_FAINA: process.env.COMISSAO_DE_FAINA_ROLE_ID as string
     }
 }
 

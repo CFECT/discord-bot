@@ -26,7 +26,7 @@ export default class CompletarFainaCommand extends Command {
 
         const userDb = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [user?.id]);
         if (!userDb) {
-            await interaction.reply({ content: "O utilizador não foi encontrado na base de dados.", ephemeral: true });
+            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
             return;
         }
 
