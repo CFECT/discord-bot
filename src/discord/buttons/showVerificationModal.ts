@@ -8,6 +8,12 @@ export default class ShowVerificationModalButton extends Button {
     }
 
     public async execute(interaction: ButtonInteraction): Promise<void> {
+        const verification = await Database.get("SELECT * FROM Verifications WHERE DiscordID = ?", [interaction.user.id]);
+        if (verification) {
+            await interaction.reply({ content: "Já tens um pedido de verificação pendente.", ephemeral: true });
+            return;
+        }
+
         const user = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [interaction.user.id]);
         if (user) {
             await interaction.reply({ content: "Já tens uma conta associada.", ephemeral: true });
@@ -24,6 +30,7 @@ export default class ShowVerificationModalButton extends Button {
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
             .setPlaceholder("Introduz o teu nome")
+            .setMaxLength(50);
         const actionRowNome = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNome);
 
         const inputNomeFaina = new TextInputBuilder()
@@ -32,6 +39,7 @@ export default class ShowVerificationModalButton extends Button {
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
             .setPlaceholder("Introduz o teu nome de faina (sem rank)")
+            .setMaxLength(50)
         const actionRowNomeFaina = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNomeFaina);
 
         const inputNumero = new TextInputBuilder()
@@ -40,6 +48,8 @@ export default class ShowVerificationModalButton extends Button {
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
             .setPlaceholder("Introduz o teu número mecanográfico")
+            .setMinLength(5)
+            .setMaxLength(6)
         const actionRowNumero = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNumero);
 
         const inputMatricula = new TextInputBuilder()

@@ -27,7 +27,7 @@ export default class DeclineVerification extends Button {
         const newEmbed = new EmbedBuilder(originalEmbed)
             .setColor(Constants.EMBED_COLORS.DENIED)
             .setFooter({
-                text: `Mudança de nome rejeitada por ${(interaction.member as GuildMember).displayName} (${interaction.user.id})`,
+                text: `Verificação rejeitada por ${(interaction.member as GuildMember).displayName} (${interaction.user.id})`,
                 iconURL: interaction.user.displayAvatarURL()
             });
 
