@@ -2,8 +2,8 @@ import { Routes, SlashCommandBuilder } from "discord.js";
 import { REST } from "@discordjs/rest"
 require("dotenv").config();
 
-const token = process.env["DISCORD_BOT_TOKEN"];
-const clientId = process.env["CLIENT_ID"];
+const token = process.env.DISCORD_BOT_TOKEN;
+const clientId = process.env.CLIENT_ID;
 const guildId = process.env["COMMANDS_GUILD_ID"];
 
 const commands = [

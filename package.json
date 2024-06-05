@@ -20,6 +20,7 @@
   "dependencies": {
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
+    "node-scp": "^0.0.23",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
