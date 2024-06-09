@@ -10,7 +10,7 @@ class DiscordBot {
 
     constructor() {
         this.client = new Client({
-            intents: [IntentsBitField.Flags.Guilds]
+            intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMembers]
         });
     }
 
