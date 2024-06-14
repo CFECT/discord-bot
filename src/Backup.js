@@ -7,7 +7,8 @@ dotenv.config();
 class Backup {
     constructor() {
         this.initialized = false;
-        this.init();
+        this.backupEnabled = process.env.BACKUP_ENABLED === 'true';
+        if (this.backupEnabled) this.init();
     }
 
     async init() {
@@ -26,6 +27,7 @@ class Backup {
     }
 
     async sendFile(fileName, remotePath) {
+        if (!this.backupEnabled) return;
         while (!this.initialized) {
             await new Promise((resolve) => setTimeout(resolve, 1000));
         }
