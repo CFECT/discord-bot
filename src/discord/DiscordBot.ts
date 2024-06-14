@@ -1,5 +1,6 @@
 import { readdirSync } from "fs";
 import { ActivityType, Client, IntentsBitField } from 'discord.js';
+import UserContextMenuRegistry from "./registry/UserContextMenuRegistry";
 import CommandRegistry from "./registry/CommandRegistry";
 import ButtonRegistry from "./registry/ButtonRegistry";
 import ModalRegistry from "./registry/ModalRegistry";
@@ -16,6 +17,7 @@ class DiscordBot {
 
     public async start(token: string): Promise<void> {
         this.registerEvents();
+        UserContextMenuRegistry.registerUserContextMenus();
         CommandRegistry.registerCommands();
         ButtonRegistry.registerButtons();
         ModalRegistry.registerModals();

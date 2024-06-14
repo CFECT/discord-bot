@@ -2,16 +2,18 @@ import type { Client, Interaction } from "discord.js";
 import CommandRegistry from "../registry/CommandRegistry";
 import ButtonRegistry from "../registry/ButtonRegistry";
 import ModalRegistry from "../registry/ModalRegistry";
+import UserContextMenuRegistry from "../registry/UserContextMenuRegistry";
 
 export function run(_: Client, interaction: Interaction) {
-    if (interaction.isCommand()) runCommand(_, interaction);
+    if (interaction.isChatInputCommand()) runCommand(_, interaction);
     else if (interaction.isModalSubmit()) runModal(_, interaction);
     else if (interaction.isButton()) runButton(_, interaction);
+    else if (interaction.isUserContextMenuCommand()) runUserContextMenu(_, interaction);
 }
 
 function runCommand(_: Client, interaction: Interaction) {
     // If the interaction is not a command, return
-    if (!interaction.isCommand()) return;
+    if (!interaction.isChatInputCommand()) return;
 
     // Get the command from the collection
     const command = CommandRegistry.getCommand(interaction.commandName);
@@ -72,5 +74,27 @@ function runButton(_: Client, interaction: Interaction) {
     } catch (error) {
         console.error(error);
         interaction.reply({ content: "There was an error while executing this button!", ephemeral: true });
+    }
+}
+
+function runUserContextMenu(_: Client, interaction: Interaction) {
+    // If the interaction is not a UserContextMenu, return
+    if (!interaction.isUserContextMenuCommand()) return;
+
+    // Get the userContextMenu from the collection
+    const userContextMenu = UserContextMenuRegistry.getUserContextMenu(interaction.commandName);
+
+    // If the userContextMenu does not exist, return
+    if (!userContextMenu) {
+        interaction.reply({ content: "User context menu not found.", ephemeral: true });
+        return;
+    }
+
+    // Try to run the userContextMenu
+    try {
+        userContextMenu.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        interaction.reply({ content: "There was an error while executing this user context menu!", ephemeral: true });
     }
 }

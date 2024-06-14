@@ -1,4 +1,4 @@
-import { Routes, SlashCommandBuilder } from "discord.js";
+import { Routes, SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType } from "discord.js";
 import { REST } from "@discordjs/rest"
 require("dotenv").config();
 
@@ -42,6 +42,9 @@ const commands = [
 				.addStringOption(option => option.setName('query').setDescription('Query to run on the database').setRequired(true))
 		)
 		.setDefaultMemberPermissions(0),
+
+	new ContextMenuCommandBuilder().setName('Completar faina').setType(ApplicationCommandType.User)
+		.setDefaultMemberPermissions(0).setDMPermission(false),
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: '10' }).setToken(token!);
