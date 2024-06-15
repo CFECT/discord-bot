@@ -21,6 +21,11 @@ const commands = [
         .addUserOption(option => option.setName('utilizador').setDescription('Utilizador cuja faina será marcada/desmarcada como completa').setRequired(true))
 		.setDefaultMemberPermissions(0),
 
+    new SlashCommandBuilder().setName('numero-aluviao').setDescription('Define o número de aluvião de um utilizador')
+        .addUserOption(option => option.setName('utilizador').setDescription('Utilizador cujo número de aluvião será alterado').setRequired(true))
+        .addStringOption(option => option.setName('numero').setDescription('Novo número de aluvião').setRequired(true))
+		.setDefaultMemberPermissions(0),
+
 	new SlashCommandBuilder().setName('edit-user').setDescription('Edita os dados de um utilizador')
 		.addUserOption(option => option.setName('utilizador').setDescription('Utilizador a editar').setRequired(true))
 		.setDefaultMemberPermissions(0),
@@ -33,17 +38,20 @@ const commands = [
 		.setDefaultMemberPermissions(0),
 
 	new SlashCommandBuilder().setName('run-db').setDescription('Runs a command on the database')
-		.addSubcommand(subcommand => 
+		.addSubcommand(subcommand =>
 			subcommand.setName('get').setDescription('Gets data from tables on the database')
 				.addStringOption(option => option.setName('query').setDescription('Query to run on the database').setRequired(true))
 		)
-		.addSubcommand(subcommand => 
+		.addSubcommand(subcommand =>
 			subcommand.setName('run').setDescription('Runs a command on the database')
 				.addStringOption(option => option.setName('query').setDescription('Query to run on the database').setRequired(true))
 		)
 		.setDefaultMemberPermissions(0),
 
 	new ContextMenuCommandBuilder().setName('Completar faina').setType(ApplicationCommandType.User)
+		.setDefaultMemberPermissions(0).setDMPermission(false),
+
+	new ContextMenuCommandBuilder().setName('Número de aluvião').setType(ApplicationCommandType.User)
 		.setDefaultMemberPermissions(0).setDMPermission(false),
 ].map(command => command.toJSON());
 

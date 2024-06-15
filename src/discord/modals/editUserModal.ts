@@ -1,4 +1,4 @@
-import { ModalSubmitInteraction, ButtonBuilder, ActionRowBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
+import { ModalSubmitInteraction, EmbedBuilder } from "discord.js";
 import { Modal } from "../registry/Modal";
 import Constants from "../../Constants";
 import Database from "../../Database";

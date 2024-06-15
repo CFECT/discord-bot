@@ -23,15 +23,15 @@ export default class CompletarFainaCommand extends Command {
             return;
         }
 
-        const modal = new ModalBuilder()
-            .setTitle("Editar Utilizador")
-            .setCustomId("editUserModal-" + discordId);
-
         const userDb = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [discordId]);
         if (!userDb) {
             await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
             return;
         }
+
+        const modal = new ModalBuilder()
+        .setTitle("Editar Utilizador")
+        .setCustomId("editUserModal-" + discordId);
 
         const inputNome = new TextInputBuilder()
             .setLabel("Nome")

@@ -1,4 +1,4 @@
-import { ActionRowBuilder, CommandInteraction, EmbedBuilder, GuildMember, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
+import { CommandInteraction, EmbedBuilder, GuildMember } from "discord.js";
 import { Command } from "../registry/Command";
 import Database from "../../Database";
 import Constants from "../../Constants";
@@ -32,9 +32,9 @@ export default class CompletarFainaCommand extends Command {
         const embed = new EmbedBuilder()
             .setColor(Constants.EMBED_COLORS.ACCEPTED)
             .setTitle("Informação do Utilizador")
-            .setAuthor({ 
+            .setAuthor({
                 name: `${member.user.username} (${member.user.id})`,
-                iconURL: member.user.displayAvatarURL() 
+                iconURL: member.user.displayAvatarURL()
             })
             .setFields(
                 { name: "Nome", value: userDb.Nome, inline: true },
