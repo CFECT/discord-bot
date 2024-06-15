@@ -41,9 +41,7 @@ export default class CompletarFainaCommand extends Command {
             await member.roles.add(Constants.ROLES.VETERANO);
         }
 
-        const name = userDb.NomeDeFaina;
-        const newName = await Utils.getFormattedName(discordId as string, name);
-        await member.setNickname(newName);
+        await Utils.updateNickname(member);
 
         await interaction.reply({
             content: `Faina de ${user} marcada como ${fainaCompleta ? "incompleta" : "completa"}!`,

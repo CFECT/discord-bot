@@ -31,10 +31,8 @@ export default class NumeroAluviaoModal extends Modal {
 
         await Database.run("UPDATE Users SET NumeroAluviao = ? WHERE DiscordID = ?", [number, discordId]);
 
-        const userDb = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [discordId]);
-        const newName = await Utils.getFormattedName(discordId, userDb.NomeDeFaina);
         const user = await interaction.guild?.members.fetch(discordId);
-        user?.setNickname(newName);
+        await Utils.updateNickname(user);
 
         await interaction.reply({
             content: `Número de faina de ${user} alterado para \`${number}\`!`,

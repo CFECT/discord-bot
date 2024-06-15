@@ -4,7 +4,7 @@ import Constants from "../../Constants";
 import Database from "../../Database";
 import Utils from "../../Utils";
 
-export default class AcceptVerificationModal extends Modal {
+export default class EditUserModal extends Modal {
     constructor() {
         super("editUserModal-", true);
     }
@@ -44,9 +44,8 @@ export default class AcceptVerificationModal extends Modal {
         await Database.run("UPDATE Users SET Nome = ?, Sexo = ?, NMec = ?, Matricula = ?, NomeDeFaina = ? WHERE DiscordID = ?",
             [nome.value, sexo.value, numero.value, matricula.value, nomeDeFaina.value, discordId]);
 
-        const newName = await Utils.getFormattedName(discordId, nomeDeFaina.value);
         const user = await interaction.guild?.members.fetch(discordId);
-        user?.setNickname(newName);
+        await Utils.updateNickname(user);
 
         const embed = new EmbedBuilder()
             .setTitle("Atualização de dados")

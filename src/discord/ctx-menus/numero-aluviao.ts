@@ -32,7 +32,7 @@ export default class NumeroAluviaoUCM extends UserContextMenu {
             .setCustomId("number")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setValue(userDb.NumeroAluviao);
+            .setValue(userDb.NumeroAluviao == "?" ? "" : userDb.NumeroAluviao);
         const actionRowNumero = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNome);
 
         modal.addComponents(actionRowNumero);

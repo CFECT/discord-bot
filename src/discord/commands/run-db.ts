@@ -2,7 +2,7 @@ import { Team, type ChatInputCommandInteraction, type InteractionReplyOptions } 
 import { Command } from "../registry/Command";
 import Database from "../../Database";
 
-export default class PingCommand extends Command {
+export default class RunDbCommand extends Command {
     constructor() {
         super("run-db", "Runs a command on the database");
     }

@@ -33,9 +33,7 @@ export default class NumeroAluviaoCommand extends Command {
 
         await Database.run("UPDATE Users SET NumeroAluviao = ? WHERE DiscordID = ?", [number, user?.id]);
 
-        const name = userDb.NomeDeFaina;
-        const newName = await Utils.getFormattedName(discordId as string, name);
-        await member.setNickname(newName);
+        await Utils.updateNickname(member);
 
         await interaction.reply({
             content: `Número de faina de ${user} alterado para \`${number}\`!`,

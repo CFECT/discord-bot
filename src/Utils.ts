@@ -18,6 +18,25 @@ class Utils {
 
         return `${rank} ${name}`;
     }
+
+    public static async getFormattedNameFromUser(user: any): Promise<string> {
+        const userDb = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [user.id]);
+        if (!userDb)
+            return await Utils.getFormattedName(user.id, user.username);
+
+        const year = userDb.Matricula >= 5 ? 5 : userDb.Matricula as number;
+        const sex = userDb.Sexo === 'F' ? 'F' : 'M';
+        const name = userDb.NomeDeFaina;
+
+        const rank = (userDb.FainaCompleta && userDb.Matricula >= 2) ? Constants.ranks[year][sex] : `[A${userDb.NumeroAluviao}]`
+
+        return `${rank} ${name}`;
+    }
+
+    public static async updateNickname(user: any): Promise<void> {
+        const newName = await Utils.getFormattedNameFromUser(user);
+        await user.setNickname(newName);
+    }
 }
 
 export default Utils;

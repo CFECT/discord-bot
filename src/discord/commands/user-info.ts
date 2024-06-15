@@ -3,7 +3,7 @@ import { Command } from "../registry/Command";
 import Database from "../../Database";
 import Constants from "../../Constants";
 
-export default class CompletarFainaCommand extends Command {
+export default class UserInfoCommand extends Command {
     constructor() {
         super("user-info", "Consulta os dados de um utilizador");
     }
