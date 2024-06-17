@@ -32,6 +32,10 @@ export default class NumeroAluviaoModal extends Modal {
         await Database.run("UPDATE Users SET NumeroAluviao = ? WHERE DiscordID = ?", [number, discordId]);
 
         const user = await interaction.guild?.members.fetch(discordId);
+        if (!user) {
+            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
+            return;
+        }
         await Utils.updateNickname(user);
 
         await interaction.reply({

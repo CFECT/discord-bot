@@ -1,3 +1,4 @@
+import { GuildMember } from 'discord.js';
 import Constants from './Constants';
 import Database from './Database.js';
 
@@ -19,10 +20,10 @@ class Utils {
         return `${rank} ${name}`;
     }
 
-    public static async getFormattedNameFromUser(user: any): Promise<string> {
+    public static async getFormattedNameFromUser(user: GuildMember): Promise<string> {
         const userDb = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [user.id]);
         if (!userDb)
-            return await Utils.getFormattedName(user.id, user.username);
+            return await Utils.getFormattedName(user.id, user.user.username);
 
         const year = userDb.Matricula >= 5 ? 5 : userDb.Matricula as number;
         const sex = userDb.Sexo === 'F' ? 'F' : 'M';
@@ -33,7 +34,7 @@ class Utils {
         return `${rank} ${name}`;
     }
 
-    public static async updateNickname(user: any): Promise<void> {
+    public static async updateNickname(user: GuildMember): Promise<void> {
         const newName = await Utils.getFormattedNameFromUser(user);
         await user.setNickname(newName);
     }

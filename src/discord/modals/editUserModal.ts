@@ -45,6 +45,10 @@ export default class EditUserModal extends Modal {
             [nome.value, sexo.value, numero.value, matricula.value, nomeDeFaina.value, discordId]);
 
         const user = await interaction.guild?.members.fetch(discordId);
+        if (!user) {
+            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
+            return;
+        }
         await Utils.updateNickname(user);
 
         const embed = new EmbedBuilder()
