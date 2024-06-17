@@ -14,7 +14,7 @@ class Utils {
             if (Object.values(rank).includes(name.split(' ')[0]))
                 name = name.split(' ').slice(1).join(' ');
 
-        const rank = (user.FainaCompleta && user.Matricula >= 2) ? Constants.ranks[year][sex] : `[A${user.NumeroAluviao}]`
+        const rank = user.FainaCompleta ? Constants.ranks[year][sex] : `[A${user.NumeroAluviao}]`
 
         return `${rank} ${name}`;
     }
@@ -28,7 +28,7 @@ class Utils {
         const sex = userDb.Sexo === 'F' ? 'F' : 'M';
         const name = userDb.NomeDeFaina;
 
-        const rank = (userDb.FainaCompleta && userDb.Matricula >= 2) ? Constants.ranks[year][sex] : `[A${userDb.NumeroAluviao}]`
+        const rank = userDb.FainaCompleta ? Constants.ranks[year][sex] : `[A${userDb.NumeroAluviao}]`
 
         return `${rank} ${name}`;
     }

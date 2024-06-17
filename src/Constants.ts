@@ -17,7 +17,7 @@ type EmbedColorsType = {
 
 class Constants {
     static ranks: RanksType = {
-        1: {'M': 'Lodo', 'F': 'Lama'},
+        1: {'M': 'Moliço', 'F': 'Moliço'},
         2: {'M': 'Junco', 'F': 'Caniça'},
         3: {'M': 'Moço', 'F': 'Moça'},
         4: {'M': 'Marnoto', 'F': 'Salineira'},
