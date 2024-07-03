@@ -25,7 +25,7 @@ class Utils {
         if (!userDb)
             return await Utils.getFormattedName(user.id, user.user.username);
 
-        const year = userDb.Matricula >= 5 ? 5 : userDb.Matricula as number;
+        const year = userDb.Matricula >= 5 || userDb.Matricula <= 0 ? 5 : userDb.Matricula as number;
         const sex = userDb.Sexo === 'F' ? 'F' : 'M';
         const name = userDb.NomeDeFaina;
 

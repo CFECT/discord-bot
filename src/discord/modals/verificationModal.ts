@@ -45,16 +45,21 @@ export default class VerificationModal extends Modal {
 
         id = id.at(-1).ID;
 
-        const verifyButton = new ButtonBuilder()
-            .setCustomId(`acceptVerification-${id}`)
-            .setLabel('Verificar')
+        const verifyButton1 = new ButtonBuilder()
+            .setCustomId(`acceptVerification-0-${id}`)
+            .setLabel('Verificar Aluvião')
+            .setStyle(ButtonStyle.Primary);
+        const verifyButton2 = new ButtonBuilder()
+            .setCustomId(`acceptVerification-1-${id}`)
+            .setLabel('Verificar Veterano')
             .setStyle(ButtonStyle.Success);
         const declineButton = new ButtonBuilder()
             .setCustomId(`declineVerification-${id}`)
             .setLabel('Recusar')
             .setStyle(ButtonStyle.Danger);
         const actionRow = new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(verifyButton)
+            .addComponents(verifyButton1)
+            .addComponents(verifyButton2)
             .addComponents(declineButton);
 
         const embed = new EmbedBuilder()

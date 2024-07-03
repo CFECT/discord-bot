@@ -10,10 +10,10 @@ export default class AcceptVerificationModalButton extends Button {
     public async execute(interaction: ButtonInteraction): Promise<void> {
         const modal = new ModalBuilder()
             .setTitle("Verificação")
-            .setCustomId("acceptVerificationModal-" + interaction.customId.split("-")[1]);
+            .setCustomId("acceptVerificationModal-" + interaction.customId.split("-")[1] + "-" + interaction.customId.split("-")[2]);
 
-        await Database.run("UPDATE Verifications SET InteractionMessageID = ? WHERE ID = ?", [interaction.message.id, interaction.customId.split("-")[1]]);
-        const user = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[1]]);
+        await Database.run("UPDATE Verifications SET InteractionMessageID = ? WHERE ID = ?", [interaction.message.id, interaction.customId.split("-")[2]]);
+        const user = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[2]]);
         if (!user) {
             await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
             return;
@@ -50,7 +50,7 @@ export default class AcceptVerificationModalButton extends Button {
             .setStyle(TextInputStyle.Short)
             .setValue(user.Matricula)
             .setMinLength(1)
-            .setMaxLength(1)
+            .setMaxLength(2)
         const actionRowMatricula = new ActionRowBuilder<TextInputBuilder>().addComponents(inputMatricula);
 
         const inputSexo = new TextInputBuilder()

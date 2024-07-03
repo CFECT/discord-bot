@@ -29,7 +29,7 @@ export default class ShowVerificationModalButton extends Button {
             .setCustomId("nome")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o teu nome (primeito e último)")
+            .setPlaceholder("Introduz o teu nome (primeiro e último)")
             .setMaxLength(50);
         const actionRowNome = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNome);
 

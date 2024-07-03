@@ -1,4 +1,4 @@
-import { ModalSubmitInteraction, ButtonBuilder, ActionRowBuilder, ButtonStyle, EmbedBuilder } from "discord.js";
+import { ModalSubmitInteraction, EmbedBuilder } from "discord.js";
 import { Modal } from "../registry/Modal";
 import Constants from "../../Constants";
 import Database from "../../Database";
@@ -17,7 +17,7 @@ export default class AcceptVerificationModal extends Modal {
             }
         });
 
-        const verification = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[1]]);
+        const verification = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[2]]);
         const discordId = verification.DiscordID;
         if (!discordId) {
             await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
@@ -38,13 +38,12 @@ export default class AcceptVerificationModal extends Modal {
         }
 
         await Database.run("INSERT INTO Users (DiscordID, Nome, Sexo, NMec, Matricula, NomeDeFaina, FainaCompleta) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                          [discordId, nome.value, sexo.value, numero.value, matricula.value, nomeDeFaina.value, false]);
-        await Database.run("DELETE FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[1]]);
+                          [discordId, nome.value, sexo.value, numero.value, matricula.value, nomeDeFaina.value, interaction.customId.split("-")[1]]);
+        await Database.run("DELETE FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[2]]);
 
-        const newName = await Utils.getFormattedName(discordId, nomeDeFaina.value);
         await interaction.guild?.members.fetch(discordId).then(async (member) => {
-            await member.setNickname(newName);
-            await member.roles.add(Constants.ROLES.ALUVIAO);
+            await Utils.updateNickname(member);
+            await member.roles.add(interaction.customId.split("-")[1] ? Constants.ROLES.VETERANO : Constants.ROLES.ALUVIAO);
         });
 
         const originalEmbed = message?.embeds[0].toJSON();
@@ -64,18 +63,11 @@ export default class AcceptVerificationModal extends Modal {
 
         await message?.edit({ embeds: [newEmbed], components: [] });
 
-        const buttonYes = new ButtonBuilder()
-            .setCustomId(`completeFaina-${discordId}`)
-            .setLabel("Marcar faina como completa")
-            .setStyle(ButtonStyle.Success);
-        const actionRow = new ActionRowBuilder<ButtonBuilder>()
-            .addComponents(buttonYes)
-
         const user = interaction.client.users.cache.get(discordId);
         if (user) {
             await user.send(`A tua verificação foi aceite!`).catch(() => { });
         }
 
-        await interaction.reply({ content: `Verificação aceite!\nPara marcar a faina como completa, clique no botão abaixo`, ephemeral: true, components: [actionRow]});
+        await interaction.reply({ content: `Verificação aceite!`, ephemeral: true});
     }
 }
