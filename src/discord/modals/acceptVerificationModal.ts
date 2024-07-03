@@ -54,7 +54,8 @@ export default class AcceptVerificationModal extends Modal {
                 { name: "NMec", value: numero.value, inline: true },
                 { name: "Matrícula", value: matricula.value, inline: true },
                 { name: "Nome de Faina", value: nomeDeFaina.value, inline: true },
-                { name: "Sexo", value: sexo.value, inline: true }
+                { name: "Sexo", value: sexo.value, inline: true },
+                { name: "Faina Completa", value: interaction.customId.split("-")[1] ? "Sim" : "Não", inline: true}
             )
             .setFooter({
                 text: `Verificação aceite por ${interaction.user.tag} (${interaction.user.id})`,
