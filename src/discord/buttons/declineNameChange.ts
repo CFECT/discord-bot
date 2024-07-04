@@ -22,7 +22,7 @@ export default class DeclineNameChange extends Button {
             return;
         }
 
-        const formattedName = Utils.getFormattedName(nameChange.DiscordID, nameChange.NomeNovo);
+        const formattedName = await Utils.getFormattedName(nameChange.DiscordID, nameChange.NomeNovo);
         await Database.run("DELETE FROM NameChanges WHERE ID = ?", [id]);
 
         const originalEmbed = interaction.message.embeds[0].toJSON();
@@ -33,7 +33,11 @@ export default class DeclineNameChange extends Button {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
-        await user.send(`O teu pedido de mudança de nome para \`${formattedName}\` foi rejeitado!`).catch(() => { });
+        const dmEmbed = new EmbedBuilder()
+            .setTitle("Mudança de Nome Rejeitada")
+            .setColor(Constants.EMBED_COLORS.DENIED)
+            .setDescription(`O teu pedido de mudança de nome para \`${formattedName}\` foi rejeitado pela Comissão de Faina.`);
+        await user.send({ embeds: [dmEmbed] }).catch(() => { });
 
         await interaction.update({ embeds: [newEmbed], components: [] });
         await interaction.followUp({ content: `Mudança de nome rejeitada!`, ephemeral: true });

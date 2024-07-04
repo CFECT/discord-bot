@@ -25,7 +25,7 @@ export default class AcceptVerificationModal extends Modal {
         }
 
         const nome = values.find((value) => value.name === "nome");
-        const sexo = values.find((value) => value.name === "sexo");
+        const sexo = values.find((value) => value.name === "sexo")?.value.toUpperCase();
         const numero = values.find((value) => value.name === "numero");
         const matricula = values.find((value) => value.name === "matricula");
         const nomeDeFaina = values.find((value) => value.name === "nome-faina");
@@ -36,14 +36,26 @@ export default class AcceptVerificationModal extends Modal {
             await interaction.reply({ content: "Por favor, preencha todos os campos.", ephemeral: true });
             return;
         }
+        if (isNaN(Number(matricula.value))) {
+            await interaction.reply({ content: "A matrícula deve ser um número.", ephemeral: true });
+            return;
+        }
+        if (sexo !== "M" && sexo !== "F") {
+            await interaction.reply({ content: "O sexo deve ser M ou F.", ephemeral: true });
+            return;
+        }
 
         await Database.run("INSERT INTO Users (DiscordID, Nome, Sexo, NMec, Matricula, NomeDeFaina, FainaCompleta) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                          [discordId, nome.value, sexo.value, numero.value, matricula.value, nomeDeFaina.value, interaction.customId.split("-")[1]]);
+                          [discordId, nome.value, sexo, numero.value, matricula.value, nomeDeFaina.value, interaction.customId.split("-")[1]]);
         await Database.run("DELETE FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[2]]);
 
         await interaction.guild?.members.fetch(discordId).then(async (member) => {
-            await Utils.updateNickname(member);
-            await member.roles.add(interaction.customId.split("-")[1] ? Constants.ROLES.VETERANO : Constants.ROLES.ALUVIAO);
+            try {
+                await Utils.updateNickname(member);
+                await member.roles.add(interaction.customId.split("-")[1] ? Constants.ROLES.VETERANO : Constants.ROLES.ALUVIAO);
+            } catch (error) {
+                console.error(error);
+            }
         });
 
         const originalEmbed = message?.embeds[0].toJSON();
@@ -54,7 +66,7 @@ export default class AcceptVerificationModal extends Modal {
                 { name: "NMec", value: numero.value, inline: true },
                 { name: "Matrícula", value: matricula.value, inline: true },
                 { name: "Nome de Faina", value: nomeDeFaina.value, inline: true },
-                { name: "Sexo", value: sexo.value, inline: true },
+                { name: "Sexo", value: sexo, inline: true },
                 { name: "Faina Completa", value: interaction.customId.split("-")[1] ? "Sim" : "Não", inline: true}
             )
             .setFooter({
@@ -66,7 +78,11 @@ export default class AcceptVerificationModal extends Modal {
 
         const user = interaction.client.users.cache.get(discordId);
         if (user) {
-            await user.send(`A tua verificação foi aceite!`).catch(() => { });
+            const dmEmbed = new EmbedBuilder()
+                .setTitle("Verificação Aceite")
+                .setColor(Constants.EMBED_COLORS.ACCEPTED)
+                .setDescription(`O teu pedido de verificação foi aceite!\nBem-vindo ${interaction.customId.split("-")[1] ? "veterano" : "aluvião"}!`);
+            await user.send({ embeds: [dmEmbed] });
         }
 
         await interaction.reply({ content: `Verificação aceite!`, ephemeral: true});

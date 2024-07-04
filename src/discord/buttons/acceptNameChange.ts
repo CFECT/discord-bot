@@ -39,7 +39,12 @@ export default class AcceptNameChange extends Button {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
-        await user.send(`O teu pedido de mudança de nome foi aceite!\nNome alterado para: \`${formattedName}\`.`).catch(() => {});
+        const dmEmbed = new EmbedBuilder()
+            .setTitle("Mudança de Nome Aceite")
+            .setColor(Constants.EMBED_COLORS.ACCEPTED)
+            .setDescription(`O teu pedido de mudança de nome para \`${formattedName}\` foi aceite pela Comissão de Faina.`);
+
+        await user.send({ embeds: [dmEmbed] }).catch(() => {});
 
         await interaction.update({ embeds: [newEmbed], components: [] });
         await interaction.followUp({ content: `Mudança de nome aceite!`, ephemeral: true});

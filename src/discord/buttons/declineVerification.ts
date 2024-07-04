@@ -1,7 +1,6 @@
-import { ButtonInteraction, EmbedBuilder, GuildMember } from "discord.js";
+import { ActionRowBuilder, ButtonInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { Button } from "../registry/Button";
 import Database from "../../Database";
-import Constants from "../../Constants";
 
 export default class DeclineVerification extends Button {
     constructor() {
@@ -9,31 +8,25 @@ export default class DeclineVerification extends Button {
     }
 
     public async execute(interaction: ButtonInteraction): Promise<void> {
-        const id = parseInt(interaction.customId.split("-")[1]);
-        const verification = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [id]);
-        if (!verification) {
-            await interaction.channel?.send("Pedido de verificação não encontrado!");
-            return;
-        }
-        const user = await interaction.guild?.members.fetch(verification.DiscordID);
+        const modal = new ModalBuilder()
+            .setTitle("Rejeitar Verificação")
+            .setCustomId("declineVerificationModal-" + interaction.customId.split("-")[1]);
+
+        await Database.run("UPDATE Verifications SET InteractionMessageID = ? WHERE ID = ?", [interaction.message.id, interaction.customId.split("-")[1]]);
+        const user = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[1]]);
         if (!user) {
-            await interaction.followUp({ content: "Utilizador não encontrado!", ephemeral: true });
+            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
             return;
         }
 
-        await Database.run("DELETE FROM Verifications WHERE ID = ?", [id]);
+        const inputReason = new TextInputBuilder()
+            .setLabel("Motivo")
+            .setCustomId("reason")
+            .setRequired(true)
+            .setStyle(TextInputStyle.Paragraph)
+        const actionRowNome = new ActionRowBuilder<TextInputBuilder>().addComponents(inputReason);
 
-        const originalEmbed = interaction.message.embeds[0].toJSON();
-        const newEmbed = new EmbedBuilder(originalEmbed)
-            .setColor(Constants.EMBED_COLORS.DENIED)
-            .setFooter({
-                text: `Verificação rejeitada por ${(interaction.member as GuildMember).displayName} (${interaction.user.id})`,
-                iconURL: interaction.user.displayAvatarURL()
-            });
-
-        await user.send(`O teu pedido de verificação foi rejeitado! Por favor tenta novamente com os dados corretos.`).catch(() => { });
-
-        await interaction.update({ embeds: [newEmbed], components: [] });
-        await interaction.followUp({ content: `Verificação rejeitada!`, ephemeral: true });
+        modal.addComponents(actionRowNome);
+        await interaction.showModal(modal);
     }
 }

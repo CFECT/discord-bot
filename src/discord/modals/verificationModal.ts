@@ -24,7 +24,7 @@ export default class VerificationModal extends Modal {
 
         const discordId = interaction.user.id;
         const nome = values.find((value) => value.name === "nome");
-        const sexo = values.find((value) => value.name === "sexo");
+        const sexo = values.find((value) => value.name === "sexo")?.value.toUpperCase();
         const numero = values.find((value) => value.name === "numero");
         const matricula = values.find((value) => value.name === "matricula");
         const nomeDeFaina = values.find((value) => value.name === "nome-faina");
@@ -33,11 +33,19 @@ export default class VerificationModal extends Modal {
             await interaction.reply({ content: "Por favor, preencha todos os campos.", ephemeral: true });
             return;
         }
+        if (isNaN(Number(matricula.value))) {
+            await interaction.reply({ content: "A matrícula deve ser um número.", ephemeral: true });
+            return;
+        }
+        if (sexo !== "M" && sexo !== "F") {
+            await interaction.reply({ content: "O sexo deve ser M ou F.", ephemeral: true });
+            return;
+        }
 
         await Database.run("INSERT INTO Verifications (DiscordID, Nome, Sexo, NMec, Matricula, NomeDeFaina, InteractionMessageID) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                           [discordId, nome.value, sexo.value, numero.value, matricula.value, nomeDeFaina.value, "-1"]);
+                           [discordId, nome.value, sexo, numero.value, matricula.value, nomeDeFaina.value, "-1"]);
         let id = await Database.getAll("SELECT * FROM Verifications WHERE DiscordID = ? AND Nome = ? AND Sexo = ? AND NMec = ? AND Matricula = ? AND NomeDeFaina = ?",
-                                       [discordId, nome.value, sexo.value, numero.value, matricula.value, nomeDeFaina.value]).catch(() => { return null; });
+                                       [discordId, nome.value, sexo, numero.value, matricula.value, nomeDeFaina.value]).catch(() => { return null; });
         if (!id || id.length === 0) {
             await interaction.reply({ content: "Ocorreu um erro ao efetuar o pedido de verificação. Por favor, contate um administrador.", ephemeral: true });
             return;
@@ -70,11 +78,11 @@ export default class VerificationModal extends Modal {
                 { name: "NMec", value: numero.value, inline: true },
                 { name: "Matrícula", value: matricula.value, inline: true },
                 { name: "Nome de Faina", value: nomeDeFaina.value, inline: true },
-                { name: "Sexo", value: sexo.value, inline: true }
+                { name: "Sexo", value: sexo, inline: true }
             )
             .setAuthor({ name: `${interaction.user.tag} (${interaction.user.id})`, iconURL: interaction.user.displayAvatarURL() });
 
         await channel.send({ embeds: [embed], components: [actionRow] });
-        await interaction.reply({ content: "Verificação enviada com sucesso!", ephemeral: true });
+        await interaction.reply({ content: "Pedido de verificação enviada com sucesso!", ephemeral: true });
     }
 }
