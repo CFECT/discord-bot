@@ -38,7 +38,7 @@ export default class ShowVerificationModalButton extends Button {
             .setCustomId("nome-faina")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
-            .setPlaceholder("Introduz o teu nome de faina (sem rank)")
+            .setPlaceholder("Exemplo: apenas 'Monteiro' para ficar 'Mestre Monteiro'")
             .setMaxLength(50)
         const actionRowNomeFaina = new ActionRowBuilder<TextInputBuilder>().addComponents(inputNomeFaina);
 
