@@ -52,7 +52,7 @@ export default class AcceptVerificationModal extends Modal {
         await interaction.guild?.members.fetch(discordId).then(async (member) => {
             try {
                 await Utils.updateNickname(member);
-                await member.roles.add(interaction.customId.split("-")[1] ? Constants.ROLES.VETERANO : Constants.ROLES.ALUVIAO);
+                await member.roles.add(interaction.customId.split("-")[1] === "1" ? Constants.ROLES.VETERANO : Constants.ROLES.ALUVIAO);
             } catch (error) {
                 console.error(error);
             }
@@ -67,7 +67,7 @@ export default class AcceptVerificationModal extends Modal {
                 { name: "Matrícula", value: matricula.value, inline: true },
                 { name: "Nome de Faina", value: nomeDeFaina.value, inline: true },
                 { name: "Sexo", value: sexo, inline: true },
-                { name: "Faina Completa", value: interaction.customId.split("-")[1] ? "Sim" : "Não", inline: true}
+                { name: "Faina Completa", value: interaction.customId.split("-")[1] === "1" ? "Sim" : "Não", inline: true}
             )
             .setFooter({
                 text: `Verificação aceite por ${interaction.user.tag} (${interaction.user.id})`,
@@ -81,7 +81,7 @@ export default class AcceptVerificationModal extends Modal {
             const dmEmbed = new EmbedBuilder()
                 .setTitle("Verificação Aceite")
                 .setColor(Constants.EMBED_COLORS.ACCEPTED)
-                .setDescription(`O teu pedido de verificação foi aceite!\nBem-vindo ${interaction.customId.split("-")[1] ? "veterano" : "aluvião"}!`);
+                .setDescription(`O teu pedido de verificação foi aceite!\nBem-vindo ${interaction.customId.split("-")[1] === "1" ? "veterano" : "aluvião"}!`);
             await user.send({ embeds: [dmEmbed] });
         }
 
