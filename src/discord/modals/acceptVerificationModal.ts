@@ -17,10 +17,12 @@ export default class AcceptVerificationModal extends Modal {
             }
         });
 
+        await interaction.deferReply({ ephemeral: true });
+
         const verification = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[2]]);
         const discordId = verification.DiscordID;
         if (!discordId) {
-            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
+            await interaction.editReply({ content: "Não foi possível encontrar o utilizador." });
             return;
         }
 
@@ -33,15 +35,15 @@ export default class AcceptVerificationModal extends Modal {
         const message = await interaction.channel?.messages.fetch(interactionMessageId as string);
 
         if (!nome || !sexo || !numero || !matricula || !nomeDeFaina) {
-            await interaction.reply({ content: "Por favor, preencha todos os campos.", ephemeral: true });
+            await interaction.editReply({ content: "Por favor, preencha todos os campos." });
             return;
         }
         if (isNaN(Number(matricula.value))) {
-            await interaction.reply({ content: "A matrícula deve ser um número.", ephemeral: true });
+            await interaction.editReply({ content: "A matrícula deve ser um número." });
             return;
         }
         if (sexo !== "M" && sexo !== "F") {
-            await interaction.reply({ content: "O sexo deve ser M ou F.", ephemeral: true });
+            await interaction.editReply({ content: "O sexo deve ser M ou F." });
             return;
         }
 
@@ -85,6 +87,6 @@ export default class AcceptVerificationModal extends Modal {
             await user.send({ embeds: [dmEmbed] });
         }
 
-        await interaction.reply({ content: `Verificação aceite!`, ephemeral: true});
+        await interaction.editReply({ content: `Verificação aceite!` });
     }
 }

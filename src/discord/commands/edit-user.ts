@@ -1,7 +1,6 @@
-import { ActionRowBuilder, CommandInteraction, GuildMember, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
+import { ActionRowBuilder, CommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { Command } from "../registry/Command";
 import Database from "../../Database";
-import Constants from "../../Constants";
 
 export default class EditUserCommand extends Command {
     constructor() {
@@ -9,11 +8,6 @@ export default class EditUserCommand extends Command {
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
-        if (!(interaction.member as GuildMember).roles.cache.has(Constants.ROLES.COMISSAO_DE_FAINA)) {
-            await interaction.reply({ content: "Não tens permissão para executar este comando.", ephemeral: true });
-            return;
-        }
-
         const user = interaction.options.get('utilizador')?.user;
         const discordId = user?.id;
         const member = interaction.guild?.members.cache.get(discordId as string);

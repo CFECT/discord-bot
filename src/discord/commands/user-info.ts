@@ -1,4 +1,4 @@
-import { CommandInteraction, EmbedBuilder, GuildMember } from "discord.js";
+import { CommandInteraction, EmbedBuilder } from "discord.js";
 import { Command } from "../registry/Command";
 import Database from "../../Database";
 import Constants from "../../Constants";
@@ -9,23 +9,20 @@ export default class UserInfoCommand extends Command {
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
-        if (!(interaction.member as GuildMember).roles.cache.has(Constants.ROLES.COMISSAO_DE_FAINA)) {
-            await interaction.reply({ content: "Não tens permissão para executar este comando.", ephemeral: true });
-            return;
-        }
+        await interaction.deferReply({ ephemeral: true });
 
         const user = interaction.options.get('utilizador')?.user;
         const discordId = user?.id;
         const member = interaction.guild?.members.cache.get(discordId as string);
 
         if (!member) {
-            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
+            await interaction.editReply({ content: "Não foi possível encontrar o utilizador." });
             return;
         }
 
         const userDb = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [discordId]);
         if (!userDb) {
-            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
+            await interaction.editReply({ content: "Não foi possível encontrar o utilizador." });
             return;
         }
 
@@ -49,6 +46,6 @@ export default class UserInfoCommand extends Command {
                 iconURL: interaction.user.displayAvatarURL()
             });
 
-        await interaction.reply({ embeds: [embed], ephemeral: true });
+        await interaction.editReply({ embeds: [embed] });
     }
 }

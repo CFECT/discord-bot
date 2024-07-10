@@ -16,10 +16,12 @@ export default class AcceptVerificationModal extends Modal {
             }
         });
 
+        await interaction.deferReply({ ephemeral: true });
+
         const verification = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[1]]);
         const discordId = verification.DiscordID;
         if (!discordId) {
-            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
+            await interaction.editReply({ content: `Não foi possível encontrar o utilizador.` });
             return;
         }
 
@@ -28,7 +30,7 @@ export default class AcceptVerificationModal extends Modal {
         const message = await interaction.channel?.messages.fetch(interactionMessageId as string);
 
         if (!reason) {
-            await interaction.reply({ content: "Por favor, preencha todos os campos.", ephemeral: true });
+            await interaction.editReply({ content: `Por favor, preencha todos os campos.` });
             return;
         }
 
@@ -61,6 +63,6 @@ export default class AcceptVerificationModal extends Modal {
             await user.send({ embeds: [dmEmbed] });
         }
 
-        await interaction.reply({ content: `Verificação rejeitada!`, ephemeral: true});
+        await interaction.editReply({ content: `Verificação rejeitada!` });
     }
 }

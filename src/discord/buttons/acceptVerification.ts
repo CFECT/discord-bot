@@ -9,7 +9,7 @@ export default class AcceptVerificationModalButton extends Button {
 
     public async execute(interaction: ButtonInteraction): Promise<void> {
         const modal = new ModalBuilder()
-            .setTitle("Aceitar Verificação")
+            .setTitle(`Aceitar Verificação - ${interaction.customId.split("-")[1] === "1" ? "Veterano" : "Aluvião"}`)
             .setCustomId("acceptVerificationModal-" + interaction.customId.split("-")[1] + "-" + interaction.customId.split("-")[2]);
 
         await Database.run("UPDATE Verifications SET InteractionMessageID = ? WHERE ID = ?", [interaction.message.id, interaction.customId.split("-")[2]]);

@@ -17,16 +17,18 @@ export default class EditUserModal extends Modal {
             }
         });
 
+        await interaction.deferReply({ ephemeral: true });
+
         const channel = interaction.guild?.channels.cache.get(Constants.VERIFICATION_CHANNEL_ID);
         if (!channel || !channel.isTextBased()) {
-            await interaction.reply({ content: "O canal de verificações não foi encontrado. Por favor, contacte um administrador.", ephemeral: true });
+            await interaction.editReply({ content: "O canal de verificações não foi encontrado. Por favor, contacte um administrador." });
             return;
         }
 
         const verification = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [interaction.customId.split("-")[1]]);
         const discordId = verification.DiscordID;
         if (!discordId) {
-            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
+            await interaction.editReply({ content: "Não foi possível encontrar o utilizador." });
             return;
         }
 
@@ -37,7 +39,7 @@ export default class EditUserModal extends Modal {
         const nomeDeFaina = values.find((value) => value.name === "nome-faina");
 
         if (!nome || !sexo || !numero || !matricula || !nomeDeFaina) {
-            await interaction.reply({ content: "Por favor, preencha todos os campos.", ephemeral: true });
+            await interaction.editReply({ content: "Por favor, preencha todos os campos." });
             return;
         }
 
@@ -46,7 +48,7 @@ export default class EditUserModal extends Modal {
 
         const user = await interaction.guild?.members.fetch(discordId);
         if (!user) {
-            await interaction.reply({ content: "Não foi possível encontrar o utilizador.", ephemeral: true });
+            await interaction.editReply({ content: "Não foi possível encontrar o utilizador." });
             return;
         }
         await Utils.updateNickname(user);
@@ -69,6 +71,6 @@ export default class EditUserModal extends Modal {
             .setAuthor({ name: `${interaction.user.tag} (${interaction.user.id})`, iconURL: interaction.user.displayAvatarURL() });
 
         await channel.send({ embeds: [embed] });
-        await interaction.reply({embeds: [embed], ephemeral: true});
+        await interaction.editReply({ embeds: [embed]});
     }
 }

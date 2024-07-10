@@ -16,9 +16,11 @@ export default class VerificationModal extends Modal {
             }
         });
 
+        await interaction.deferReply({ ephemeral: true });
+
         const channel = interaction.guild?.channels.cache.get(Constants.VERIFICATION_CHANNEL_ID);
         if (!channel || !channel.isTextBased()) {
-            await interaction.reply({ content: "O canal de verificações não foi encontrado. Por favor, contacte um administrador.", ephemeral: true });
+            await interaction.editReply({ content: "O canal de verificações não foi encontrado. Por favor, contacte um administrador." });
             return;
         }
 
@@ -30,15 +32,15 @@ export default class VerificationModal extends Modal {
         const nomeDeFaina = values.find((value) => value.name === "nome-faina");
 
         if (!nome || !sexo || !numero || !matricula || !nomeDeFaina) {
-            await interaction.reply({ content: "Por favor, preencha todos os campos.", ephemeral: true });
+            await interaction.editReply({ content: "Por favor, preencha todos os campos." });
             return;
         }
         if (isNaN(Number(matricula.value))) {
-            await interaction.reply({ content: "A matrícula deve ser um número.", ephemeral: true });
+            await interaction.editReply({ content: "A matrícula deve ser um número." });
             return;
         }
         if (sexo !== "M" && sexo !== "F") {
-            await interaction.reply({ content: "O sexo deve ser M ou F.", ephemeral: true });
+            await interaction.editReply({ content: "O sexo deve ser M ou F." });
             return;
         }
 
@@ -47,7 +49,7 @@ export default class VerificationModal extends Modal {
         let id = await Database.getAll("SELECT * FROM Verifications WHERE DiscordID = ? AND Nome = ? AND Sexo = ? AND NMec = ? AND Matricula = ? AND NomeDeFaina = ?",
                                        [discordId, nome.value, sexo, numero.value, matricula.value, nomeDeFaina.value]).catch(() => { return null; });
         if (!id || id.length === 0) {
-            await interaction.reply({ content: "Ocorreu um erro ao efetuar o pedido de verificação. Por favor, contate um administrador.", ephemeral: true });
+            await interaction.editReply({ content: "Ocorreu um erro ao efetuar o pedido de verificação. Por favor, contate um administrador." });
             return;
         }
 
@@ -83,6 +85,6 @@ export default class VerificationModal extends Modal {
             .setAuthor({ name: `${interaction.user.tag} (${interaction.user.id})`, iconURL: interaction.user.displayAvatarURL() });
 
         await channel.send({ embeds: [embed], components: [actionRow] });
-        await interaction.reply({ content: "Pedido de verificação enviada com sucesso!", ephemeral: true });
+        await interaction.editReply({ content: "Pedido de verificação enviada com sucesso!" });
     }
 }

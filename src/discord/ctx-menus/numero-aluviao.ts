@@ -1,6 +1,5 @@
-import { ActionRowBuilder, GuildMember, ModalBuilder, TextInputBuilder, TextInputStyle, UserContextMenuCommandInteraction } from "discord.js";
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, UserContextMenuCommandInteraction } from "discord.js";
 import Database from "../../Database";
-import Constants from "../../Constants";
 import { UserContextMenu } from "../registry/UserContextMenu";
 
 export default class NumeroAluviaoUCM extends UserContextMenu {
@@ -9,11 +8,6 @@ export default class NumeroAluviaoUCM extends UserContextMenu {
     }
 
     public async execute(interaction: UserContextMenuCommandInteraction): Promise<void> {
-        if (!(interaction.member as GuildMember).roles.cache.has(Constants.ROLES.COMISSAO_DE_FAINA)) {
-            await interaction.reply({ content: "Não tens permissão para executar este comando.", ephemeral: true });
-            return;
-        }
-
         const user = interaction.targetUser;
         const discordId = user?.id;
 

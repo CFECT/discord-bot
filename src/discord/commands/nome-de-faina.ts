@@ -10,18 +10,20 @@ export default class NomeDeFainaCommand extends Command {
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
+        await interaction.deferReply({ ephemeral: true });
+
         let newName = interaction.options.get('nome')?.value;
 
         const channel = interaction.guild?.channels.cache.get(Constants.VERIFICATION_CHANNEL_ID);
         if (!channel || !channel.isTextBased()) {
-            await interaction.reply({ content: "Não foi possível encontrar o canal de verificação. Por favor, contate um administrador.", ephemeral: true });
+            await interaction.editReply({ content: "Não foi possível encontrar o canal de verificação. Por favor, contate um administrador." });
             return;
         }
 
         await Database.run("INSERT INTO NameChanges (DiscordID, NomeNovo) VALUES (?, ?)", [interaction.user.id, newName]);
         let id = await Database.getAll("SELECT * FROM NameChanges WHERE DiscordID = ? AND NomeNovo = ?", [interaction.user.id, newName]).catch(() => { return null; });
         if (!id || id.length === 0) {
-            await interaction.reply({ content: "Ocorreu um erro ao efetuar o pedido de mudança de nome. Por favor, contate um administrador.", ephemeral: true });
+            await interaction.editReply({ content: "Ocorreu um erro ao efetuar o pedido de mudança de nome. Por favor, contate um administrador." });
             return;
         }
 
@@ -48,9 +50,6 @@ export default class NomeDeFainaCommand extends Command {
 
         await channel.send({ embeds: [embed], components: [actionRow] });
 
-        await interaction.reply({
-            content: `Pedido de mudança de nome com ID ${id} efetuado com sucesso! Aguarde a aprovação por parte de um elemento da Comissão de Faina.`,
-            ephemeral: true
-        });
+        await interaction.editReply({ content: `Pedido de mudança de nome com ID ${id} efetuado com sucesso! Aguarde a aprovação por parte de um elemento da Comissão de Faina.` });
     }
 }
