@@ -58,6 +58,10 @@ const commands = [
     new SlashCommandBuilder().setName('send-verify-message').setDescription('Sends the message to setup the verification channel')
         .setDefaultMemberPermissions(0),
 
+	new SlashCommandBuilder().setName('numero-aluviao-bulk').setDescription('Define o número de aluvião de vários utilizadores')
+		.addAttachmentOption(option => option.setName('ficheiro').setDescription('Ficheiro CSV com os números mecanográficos e de aluvião').setRequired(true))
+		.setDefaultMemberPermissions(0),
+
     new SlashCommandBuilder().setName('run-db').setDescription('Runs a command on the database')
         .addSubcommand(subcommand =>
             subcommand.setName('get').setDescription('Gets data from tables on the database')
