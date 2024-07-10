@@ -89,6 +89,10 @@ const guild_commands = [
         .addUserOption(option => option.setName('utilizador').setDescription('Utilizador a consultar').setRequired(true))
         .setDefaultMemberPermissions(0),
 
+	new SlashCommandBuilder().setName('numero-aluviao-bulk').setDescription('Define o número de aluvião de vários utilizadores')
+		.addAttachmentOption(option => option.setName('ficheiro').setDescription('Ficheiro CSV com os números mecanográficos e de aluvião').setRequired(true))
+		.setDefaultMemberPermissions(0),
+
     new ContextMenuCommandBuilder().setName('Completar faina').setType(ApplicationCommandType.User)
         .setDefaultMemberPermissions(0).setDMPermission(false),
 
