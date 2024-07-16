@@ -31,7 +31,8 @@ class Reminders {
                     .setFooter({
                         text: `Lembrete de ${user?.username} (${user?.id})`,
                         iconURL: user?.displayAvatarURL()
-                    });
+                    })
+                    .setTimestamp(reminder.Time);
 
                 const content = role ? `${user} | ${role}` : `${user}`;
 
