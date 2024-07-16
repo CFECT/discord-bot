@@ -14,6 +14,11 @@ if (!token || !clientId) {
 const commands = [
     new SlashCommandBuilder().setName('ping').setDescription('Check the bot ping'),
 
+    new SlashCommandBuilder().setName('relembrar').setDescription('Relembrar-te de algo')
+        .addStringOption(option => option.setName('time').setDescription('Tempo para relembrar-te').setRequired(true))
+        .addStringOption(option => option.setName('message').setDescription('Mensagem a relembrar-te').setRequired(true))
+        .addRoleOption(option => option.setName('role').setDescription('Relembra também um cargo').setRequired(false)),
+
     new SlashCommandBuilder().setName('nome-de-faina').setDescription('Efetua o pedido de mudança de nome de faina no servidor')
         .addStringOption(option => option.setName('nome').setDescription('Novo nome de faina').setRequired(true)),
 

@@ -21,7 +21,7 @@ export default class CadernoCommand extends Command {
         if (subcommand === "get")
             await interaction.editReply({ content: `O caderno está em **${caderno}** traços!` });
         else if (subcommand === "reset") {
-            await Database.run("UPDATE FainaData SET Value = ? WHERE Key = ?", [caderno.toString(), "caderno"]);
+            await Database.run("UPDATE FainaData SET Value = ? WHERE Key = ?", ["0", "caderno"]);
             await interaction.editReply({ content: "O caderno foi reiniciado!" });
         }
         else if (subcommand === "set") {
@@ -31,7 +31,7 @@ export default class CadernoCommand extends Command {
         }
         else if (subcommand === "add") {
             const amount = interaction.options.getInteger("amount", true);
-            caderno += amount;
+            caderno -=- amount;
             await Database.run("UPDATE FainaData SET Value = ? WHERE Key = ?", [caderno.toString(), "caderno"]);
             await interaction.editReply({ content: `Foram adicionados **${amount}** traços ao caderno!\nO caderno está agora em **${caderno}** traços!`});
         }
