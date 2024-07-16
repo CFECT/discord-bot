@@ -9,7 +9,7 @@ export default class RelembrarCommand extends Command {
     }
 
     public async execute(interaction: ChatInputCommandInteraction) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ });
 
         const timeInput = interaction.options.getString("time", true);
         const messageInput = interaction.options.getString("message", true);
@@ -28,6 +28,9 @@ export default class RelembrarCommand extends Command {
 
         if (isNaN(time.getTime()) || time.getTime() <= Date.now()) {
             await interaction.editReply("O tempo do lembrete é inválido.");
+            setTimeout(() => {
+                interaction.deleteReply();
+            }, 2500);
             return;
         }
 
@@ -36,6 +39,9 @@ export default class RelembrarCommand extends Command {
         } catch (error) {
             console.error(error);
             await interaction.editReply("Ocorreu um erro ao registar o lembrete.");
+            setTimeout(() => {
+                interaction.deleteReply();
+            }, 2500);
             return;
         }
 
