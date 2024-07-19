@@ -58,7 +58,7 @@ export default class BoteCommand extends Command {
             }
 
             const embed = new EmbedBuilder()
-                .setTitle("Bote #" + boteId + " | Por " + autor)
+                .setTitle("Bote #" + boteId)
                 .setColor("#0099ff")
                 .addFields({
                     name: "Autor",
