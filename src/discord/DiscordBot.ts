@@ -1,5 +1,6 @@
 import { readdirSync } from "fs";
 import { ActivityType, Client, IntentsBitField } from 'discord.js';
+import MentionableSelectMenuRegistry from "./registry/MentionableSelectMenuRegistry";
 import UserContextMenuRegistry from "./registry/UserContextMenuRegistry";
 import CommandRegistry from "./registry/CommandRegistry";
 import ButtonRegistry from "./registry/ButtonRegistry";
@@ -18,12 +19,13 @@ class DiscordBot {
 
     public async start(token: string): Promise<void> {
         this.registerEvents();
+        await Database.init();
+        await Reminders.init(this.client);
+        MentionableSelectMenuRegistry.registerMentionableSelectMenus();
         UserContextMenuRegistry.registerUserContextMenus();
         CommandRegistry.registerCommands();
         ButtonRegistry.registerButtons();
         ModalRegistry.registerModals();
-        Database.init();
-        Reminders.init(this.client);
         await this.client.login(token);
         this.client.user?.setPresence({ activities: [{ name: "aluviões a encher :>", type: ActivityType.Watching }] });
     }

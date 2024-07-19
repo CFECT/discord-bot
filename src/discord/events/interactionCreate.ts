@@ -3,12 +3,14 @@ import CommandRegistry from "../registry/CommandRegistry";
 import ButtonRegistry from "../registry/ButtonRegistry";
 import ModalRegistry from "../registry/ModalRegistry";
 import UserContextMenuRegistry from "../registry/UserContextMenuRegistry";
+import MentionableSelectMenuRegistry from "../registry/MentionableSelectMenuRegistry";
 
 export function run(_: Client, interaction: Interaction) {
     if (interaction.isChatInputCommand()) runCommand(_, interaction);
     else if (interaction.isModalSubmit()) runModal(_, interaction);
     else if (interaction.isButton()) runButton(_, interaction);
     else if (interaction.isUserContextMenuCommand()) runUserContextMenu(_, interaction);
+    else if (interaction.isMentionableSelectMenu()) runMentionableSelectMenu(_, interaction);
 }
 
 function runCommand(_: Client, interaction: Interaction) {
@@ -64,7 +66,7 @@ function runButton(_: Client, interaction: Interaction) {
 
     // If the button does not exist, return
     if (!button) {
-        interaction.reply({ content: "Modal not found.", ephemeral: true });
+        interaction.reply({ content: "Button not found.", ephemeral: true });
         return;
     }
 
@@ -96,5 +98,27 @@ function runUserContextMenu(_: Client, interaction: Interaction) {
     } catch (error) {
         console.error(error);
         interaction.reply({ content: "There was an error while executing this user context menu!", ephemeral: true });
+    }
+}
+
+function runMentionableSelectMenu(_: Client, interaction: Interaction) {
+    // If the interaction is not a mentionableSelectMenu, return
+    if (!interaction.isMentionableSelectMenu()) return;
+
+    // Get the mentionableSelectMenu from the collection
+    const mentionableSelectMenu = MentionableSelectMenuRegistry.getMentionableSelectMenu(interaction.customId);
+
+    // If the mentionableSelectMenu does not exist, return
+    if (!mentionableSelectMenu) {
+        interaction.reply({ content: "Mentionable Select Menu not found.", ephemeral: true });
+        return;
+    }
+
+    // Try to run the mentionableSelectMenu
+    try {
+        mentionableSelectMenu.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        interaction.reply({ content: "There was an error while executing this mentionableSelectMenu!", ephemeral: true });
     }
 }

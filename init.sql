@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS Reminders (
     DiscordID TEXT NOT NULL,
     GuildID TEXT NOT NULL,
     ChannelID TEXT NOT NULL,
-    RoleID TEXT,
+    MentionsIDs TEXT,
     Message TEXT NOT NULL,
     Time INTEGER NOT NULL
 );
