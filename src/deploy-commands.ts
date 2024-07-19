@@ -52,6 +52,16 @@ const commands = [
         )
         .setDefaultMemberPermissions(0),
 
+    new SlashCommandBuilder().setName('bote').setDescription('Botes')
+        .addSubcommand(subcommand =>
+            subcommand.setName('random').setDescription('Escolhe um bote aleatório')
+        )
+        .addSubcommand(subcommand =>
+            subcommand.setName('add').setDescription('Adiciona um bote')
+            .addStringOption(option => option.setName('autor').setDescription('Autor do bote').setRequired(true))
+            .addStringOption(option => option.setName('bote').setDescription('Bote').setRequired(true))
+        ),
+
     new SlashCommandBuilder().setName('edit-user').setDescription('Edita os dados de um utilizador')
         .addUserOption(option => option.setName('utilizador').setDescription('Utilizador a editar').setRequired(true))
         .setDefaultMemberPermissions(0),
