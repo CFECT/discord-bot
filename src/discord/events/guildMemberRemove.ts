@@ -3,6 +3,8 @@ import Logger from "../../Logger";
 import Database from "../../Database";
 
 export async function run(_: Client, member: GuildMember) {
+    await Database.run(`UPDATE Botes SET UploaderName = ? WHERE UploaderID = ?`, [member.displayName, member.id]);
+
     await Database.run(`DELETE FROM Users WHERE DiscordID = ?`, [member.id]);
     await Database.run(`DELETE FROM Verifications WHERE DiscordID = ?`, [member.id]);
     await Database.run(`DELETE FROM NameChanges WHERE DiscordID = ?`, [member.id]);

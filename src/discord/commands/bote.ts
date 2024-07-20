@@ -30,11 +30,22 @@ export default class BoteCommand extends Command {
                     name: "Bote",
                     value: bote.Bote
                 })
-                .setFooter({
-                    text: "Registado por " + bote.Uploader,
-                    iconURL: interaction.user.displayAvatarURL()
-                })
                 .setTimestamp(bote.Time);
+
+            const jointUploader = await Database.get("SELECT * FROM Botes LEFT OUTER JOIN Users ON UploaderID=DiscordID");
+
+            if (jointUploader.DiscordID) {
+                const uploader = await interaction.guild?.members.fetch(jointUploader.DiscordID)!;
+                embed.setFooter({
+                    text: "Registado por " + uploader.displayName,
+                    iconURL: uploader.user.displayAvatarURL()
+                })
+            } else {
+                embed.setFooter({
+                    text: "Registado por " + bote.UploaderName,
+                    iconURL: "https://cdn.discordapp.com/embed/avatars/1.png"
+                })
+            }
 
             await interaction.editReply({ embeds: [embed] });
         }
@@ -47,9 +58,9 @@ export default class BoteCommand extends Command {
             const autor = interaction.options.getString("autor", true);
             const bote = interaction.options.getString("bote", true);
             const timestamp = Date.now();
-            const uploader = (interaction.member as GuildMember).displayName;
+            const uploader = interaction.member as GuildMember;
 
-            await Database.run("INSERT INTO Botes (Author, Bote, Time, Uploader) VALUES (?, ?, ?, ?)", [autor, bote, timestamp, uploader]);
+            await Database.run("INSERT INTO Botes (Author, Bote, Time, UploaderID) VALUES (?, ?, ?, ?)", [autor, bote, timestamp, uploader.id]);
             const boteId = (await Database.get("SELECT * FROM Botes Where Time = ?", [timestamp])).ID;
 
             if (!boteId) {
@@ -69,8 +80,8 @@ export default class BoteCommand extends Command {
                     value: bote,
                 })
                 .setFooter({
-                    text: "Registado por " + uploader,
-                    iconURL: interaction.user.displayAvatarURL()
+                    text: "Registado por " + uploader.displayName,
+                    iconURL: uploader.user.displayAvatarURL()
                 })
                 .setTimestamp(timestamp);
 

@@ -46,5 +46,6 @@ CREATE TABLE IF NOT EXISTS Botes (
     Author TEXT NOT NULL,
     Bote TEXT NOT NULL,
     Time INTEGER NOT NULL,
-    Uploader TEXT NOT NULL
+    UploaderID TEXT NOT NULL,
+    UploaderName TEXT
 );
