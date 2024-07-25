@@ -37,7 +37,8 @@ export default class AcceptNameChange extends Button {
             .setFooter({
                 text: `Mudança de nome aceite por ${(interaction.member as GuildMember).displayName} (${interaction.user.id})`,
                 iconURL: interaction.user.displayAvatarURL()
-            });
+            })
+            .setTimestamp(Date.now());
 
         const dmEmbed = new EmbedBuilder()
             .setTitle("Mudança de Nome Aceite")

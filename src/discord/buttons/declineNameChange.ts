@@ -31,7 +31,8 @@ export default class DeclineNameChange extends Button {
             .setFooter({
                 text: `Mudança de nome rejeitada por ${(interaction.member as GuildMember).displayName} (${interaction.user.id})`,
                 iconURL: interaction.user.displayAvatarURL()
-            });
+            })
+            .setTimestamp(Date.now());
 
         const dmEmbed = new EmbedBuilder()
             .setTitle("Mudança de Nome Rejeitada")

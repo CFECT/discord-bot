@@ -74,7 +74,8 @@ export default class AcceptVerificationModal extends Modal {
             .setFooter({
                 text: `Verificação aceite por ${interaction.user.tag} (${interaction.user.id})`,
                 iconURL: interaction.user.displayAvatarURL()
-            });
+            })
+            .setTimestamp(Date.now());
 
         await message?.edit({ embeds: [newEmbed], components: [] });
 
