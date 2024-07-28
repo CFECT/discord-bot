@@ -11,6 +11,11 @@ export default class ReminderMention extends MentionableSelectMenu {
         await interaction.deferReply({ ephemeral: true });
         const reminderId = parseInt(interaction.customId.split("-")[1]);
 
+        if (!Reminders.checkIfReminderExists(reminderId)) {
+            await interaction.editReply("Este lembrete não existe.");
+            return;
+        }
+
         const rolesToMention = interaction.roles;
         const usersToMention = interaction.users;
 
@@ -18,9 +23,16 @@ export default class ReminderMention extends MentionableSelectMenu {
 
         await Reminders.setMentionsOnReminder(reminderId, values);
 
+        if (values.length === 0) {
+            await interaction.editReply("Menções removidas com sucesso.\n\nPara adicionar menções, basta selecionar as opções acima.");
+            return;
+        }
+
         let content = "Menções registadas: \n";
-        content += "- Cargos: " + rolesToMention.map(role => `<@&${role.id}>`).join(", ") + "\n";
-        content += "- Membros: " + usersToMention.map(user => `<@${user.id}>`).join(", ");
+        if (rolesToMention.size > 0)
+            content += "- Cargos: " + rolesToMention.map(role => `<@&${role.id}>`).join(", ") + "\n";
+        if (usersToMention.size > 0)
+            content += "- Membros: " + usersToMention.map(user => `<@${user.id}>`).join(", ");
         content += "\n\nPara remover as menções, basta desmarcar as opções acima.\n";
         content += "Para adicionar mais menções, basta selecionar mais opções acima.";
 
