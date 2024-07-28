@@ -32,7 +32,7 @@ class Reminders {
                     let mention: Role | GuildMember | undefined | null = await guild?.roles.fetch(mentionId);
                     if (!mention) mention = await guild?.members.fetch(mentionId);
                     if (!mention) continue;
-                    
+
                     if (mention instanceof Role) roleMentions.push(mention);
                     if (mention instanceof GuildMember) memberMentions.push(mention);
                 }
@@ -61,6 +61,10 @@ class Reminders {
 
     async loadReminders(): Promise<Reminder[]> {
         return await Database.getAll("SELECT * FROM Reminders");
+    }
+
+    public checkIfReminderExists(reminderId: number): boolean {
+        return this.reminders.some(r => r.ID === reminderId);
     }
 
     public async saveReminder(discordId: string, guildId: string, channelId: string, message: string, time: number): Promise<number> {
