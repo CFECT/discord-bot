@@ -27,7 +27,7 @@ class Database {
 
     backup() {
         this.backupTable('Users').then(Backup.sendFile(resolve(__dirname, "..", "backup.db"), `backup-${Date.now()}.db`)).catch(console.error);
-        setTimeout(this.backup, 1000 * 60 * 60 * 12); // Backup every 12 hours
+        setTimeout(this.backup.bind(this), 1000 * 60 * 60 * 12); // Backup every 12 hours
     }
 
     backupTable(tableName) {
