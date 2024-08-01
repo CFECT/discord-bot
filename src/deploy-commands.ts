@@ -69,7 +69,11 @@ const commands = [
         .addUserOption(option => option.setName('utilizador').setDescription('Utilizador a consultar').setRequired(true))
         .setDefaultMemberPermissions(0),
 
-    new SlashCommandBuilder().setName('send-verify-message').setDescription('Sends the message to setup the verification channel')
+    new SlashCommandBuilder().setName('eval').setDescription('Evaluates javascript code')
+        .addStringOption(option => option.setName('expression').setDescription('Expression to evaluate').setRequired(true))
+        .addBooleanOption(option => option.setName('async').setDescription('Whether to evaluate the expression asynchronously'))
+        .addBooleanOption(option => option.setName('silent').setDescription('Whether to suppress the output'))
+        .addIntegerOption(option => option.setName('depth').setDescription('Depth of the output'))
         .setDefaultMemberPermissions(0),
 
     new SlashCommandBuilder().setName('run-db').setDescription('Runs a command on the database')
