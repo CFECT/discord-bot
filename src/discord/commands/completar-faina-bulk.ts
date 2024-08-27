@@ -1,11 +1,12 @@
 import { Attachment, CommandInteraction, GuildMember, InteractionReplyOptions, Team } from "discord.js";
 import { Command } from "../registry/Command";
+import Constants from "../../Constants";
 import Database from "../../Database";
 import Utils from "../../Utils";
 
-export default class NumeroAluviaoBulkCommand extends Command {
+export default class CompletarFainaBulkCommand extends Command {
     constructor() {
-        super("numero-aluviao-bulk", "Define o número de aluvião de vários utilizadores");
+        super("completar-faina-bulk", "Completa a faina de vários utilizadores");
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
@@ -50,13 +51,12 @@ export default class NumeroAluviaoBulkCommand extends Command {
 
         const text = await file.text();
         const lines = text.split('\n');
-        const query = "UPDATE Users SET NumeroAluviao = ? WHERE NMec = ?";
+        lines.pop();
+        const query = "UPDATE Users SET FainaCompleta = true WHERE NMec = ?";
         for (const index in lines) {
-            const line = lines[index];
-            if (!line) continue;
-            let [nmec, naluviao] = line.split(',');
-            if (!nmec || !naluviao) {
-                invalid_lines.push(`- Line ${parseInt(index) + 1} - ${line}`);
+            const nmec = lines[index];
+            if (!nmec || nmec.length <= 4 || nmec.length >= 7 || isNaN(parseInt(nmec))) {
+                invalid_lines.push(`- Line ${parseInt(index) + 1} - ${nmec}`);
                 continue;
             }
 
@@ -67,14 +67,14 @@ export default class NumeroAluviaoBulkCommand extends Command {
             }
             const discordUserId = user.DiscordID;
 
-            await Database.run(query, [naluviao, nmec]).then(async () => {
-                if (!user.FainaCompleta) {
-                    const member = await interaction.guild?.members.fetch(discordUserId as string) as GuildMember;
-                    await Utils.updateNickname(member);
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
+            await Database.run(query, [nmec]).then(async () => {
+                const member = await interaction.guild?.members.fetch(discordUserId as string) as GuildMember;
+                await member.roles.remove(Constants.ROLES.ALUVIAO);
+                await member.roles.add(Constants.ROLES.VETERANO);
+                await Utils.updateNickname(member);
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }).catch((error) => {
-                processing_errors.push(`- Line ${parseInt(index) + 1} - ${line} - ${error}`);
+                processing_errors.push(`- Line ${parseInt(index) + 1} - ${nmec} - ${error}`);
             });
         }
 

@@ -93,6 +93,13 @@ const guild_commands = [
 		.addAttachmentOption(option => option.setName('ficheiro').setDescription('Ficheiro CSV com os números mecanográficos e de aluvião').setRequired(true))
 		.setDefaultMemberPermissions(0),
 
+	new SlashCommandBuilder().setName('completar-faina-bulk').setDescription('Completa a faina de vários utilizadores')
+		.addAttachmentOption(option => option.setName('ficheiro').setDescription('Ficheiro CSV com os números mecanográficos').setRequired(true))
+		.setDefaultMemberPermissions(0),
+
+	new SlashCommandBuilder().setName('update-matriculas').setDescription('Atualiza a matrícula de todos os utilizadores')
+		.setDefaultMemberPermissions(0),
+
     new ContextMenuCommandBuilder().setName('Completar faina').setType(ApplicationCommandType.User)
         .setDefaultMemberPermissions(0).setDMPermission(false),
 

@@ -1,6 +1,6 @@
 import { MentionableSelectMenuInteraction } from "discord.js";
 import { MentionableSelectMenu } from "../registry/MentionableSelectMenu";
-import Reminders from "../extras/Reminders";
+import Reminders from "../managers/Reminders";
 
 export default class ReminderMention extends MentionableSelectMenu {
     constructor() {

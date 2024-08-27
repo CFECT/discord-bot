@@ -47,6 +47,8 @@ export default class EditUserModal extends Modal {
         }
         await Utils.updateNickname(user);
 
+        const member = await interaction.guild?.members.fetch(discordId);
+
         const embed = new EmbedBuilder()
             .setTitle("Atualização de dados")
             .setDescription(`Os dados de ${user} foram atualizados.`)
@@ -62,7 +64,7 @@ export default class EditUserModal extends Modal {
                 text: `Dados atualizados por ${interaction.user.tag} (${interaction.user.id})`,
                 iconURL: interaction.user.displayAvatarURL()
             })
-            .setAuthor({ name: `${interaction.user.tag} (${interaction.user.id})`, iconURL: interaction.user.displayAvatarURL() })
+            .setAuthor({ name: `${member?.displayName} (${member?.id})`, iconURL: member?.user.displayAvatarURL() })
             .setTimestamp(Date.now());
 
         await interaction.editReply({ embeds: [embed]});

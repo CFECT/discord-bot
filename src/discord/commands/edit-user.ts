@@ -62,7 +62,7 @@ export default class EditUserCommand extends Command {
             .setStyle(TextInputStyle.Short)
             .setValue(userDb.Matricula)
             .setMinLength(1)
-            .setMaxLength(1)
+            .setMaxLength(2)
         const actionRowMatricula = new ActionRowBuilder<TextInputBuilder>().addComponents(inputMatricula);
 
         const inputSexo = new TextInputBuilder()

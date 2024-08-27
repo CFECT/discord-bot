@@ -42,9 +42,10 @@ export default class UserInfoCommand extends Command {
                 { name: "Número de Aluvião", value: userDb.NumeroAluviao, inline: true },
             )
             .setFooter({
-                text: `Dados pedidos por por ${interaction.user.tag} (${interaction.user.id})`,
+                text: `Dados pedidos por ${interaction.user.tag} (${interaction.user.id})`,
                 iconURL: interaction.user.displayAvatarURL()
-            });
+            })
+            .setTimestamp(Date.now());
 
         await interaction.editReply({ embeds: [embed] });
     }
