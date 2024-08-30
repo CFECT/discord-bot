@@ -35,6 +35,9 @@ const global_commands = [
                 .addStringOption(option => option.setName('query').setDescription('Query to run on the database').setRequired(true))
         )
         .setDefaultMemberPermissions(0),
+
+    new SlashCommandBuilder().setName('backup-database').setDescription('Backs up the database')
+        .setDefaultMemberPermissions(0),
 ].map(command => command.toJSON());
 
 const guild_commands = [

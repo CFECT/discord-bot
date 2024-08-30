@@ -6,7 +6,8 @@ import CommandRegistry from "./registry/CommandRegistry";
 import ButtonRegistry from "./registry/ButtonRegistry";
 import ModalRegistry from "./registry/ModalRegistry";
 import Database from "../Database";
-import Reminders from "./extras/Reminders";
+import Reminders from "./managers/Reminders";
+import Backups from "./managers/Backups";
 
 class DiscordBot {
     private client: Client;
@@ -27,6 +28,7 @@ class DiscordBot {
         ButtonRegistry.registerButtons();
         ModalRegistry.registerModals();
         await this.client.login(token);
+        await Backups.init(this.client);
         this.client.user?.setPresence({ activities: [{ name: "aluviões a encher :>", type: ActivityType.Watching }] });
     }
 

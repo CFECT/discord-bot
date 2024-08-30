@@ -1,6 +1,6 @@
 import { ActionRowBuilder, EmbedBuilder, MentionableSelectMenuBuilder, PermissionsBitField, type ChatInputCommandInteraction } from "discord.js";
 import { Command } from "../registry/Command";
-import Reminders from "../extras/Reminders";
+import Reminders from "../managers/Reminders";
 import Duration from "../../Duration"
 
 export default class RelembrarCommand extends Command {
