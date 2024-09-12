@@ -28,7 +28,8 @@ class DiscordBot {
         ButtonRegistry.registerButtons();
         ModalRegistry.registerModals();
         await this.client.login(token);
-        await Backups.init(this.client);
+        if (process.env.BACKUP_ENABLED === "true")
+            await Backups.init(this.client);
         this.client.user?.setPresence({ activities: [{ name: "aluviões a encher :>", type: ActivityType.Watching }] });
     }
 

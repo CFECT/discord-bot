@@ -16,7 +16,8 @@ const global_commands = [
 
     new SlashCommandBuilder().setName('relembrar').setDescription('Relembrar-te de algo')
         .addStringOption(option => option.setName('time').setDescription('Tempo para relembrar-te').setRequired(true))
-        .addStringOption(option => option.setName('message').setDescription('Mensagem a relembrar-te').setRequired(true)),
+        .addStringOption(option => option.setName('message').setDescription('Mensagem a relembrar-te').setRequired(true))
+        .addChannelOption(option => option.setName('channel').setDescription('Canal onde será enviado o lembrete')),
 
     new SlashCommandBuilder().setName('eval').setDescription('Evaluates javascript code')
         .addStringOption(option => option.setName('expression').setDescription('Expression to evaluate').setRequired(true))
