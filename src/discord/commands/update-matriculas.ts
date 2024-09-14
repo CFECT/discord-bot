@@ -1,8 +1,6 @@
-import { CommandInteraction, InteractionReplyOptions, Team } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, InteractionReplyOptions, Team } from "discord.js";
 import { Command } from "../registry/Command";
 import Constants from "../../Constants";
-import Database from "../../Database";
-import Utils from "../../Utils";
 
 export default class UpdateMatriculasCommand extends Command {
     constructor() {
@@ -10,7 +8,7 @@ export default class UpdateMatriculasCommand extends Command {
     }
 
     public async execute(interaction: CommandInteraction): Promise<void> {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply();
         await interaction.client.application.fetch();
         const owner = interaction.client.application.owner;
         if (!owner) {
@@ -34,50 +32,29 @@ export default class UpdateMatriculasCommand extends Command {
             }
         }
 
-        const not_found: string[] = [];
-        const processing_errors: string[] = [];
-
-        const query = "UPDATE Users SET Matricula = ? WHERE DiscordID = ?";
-        const members = await interaction.guild?.members.fetch();
-        for (const member of members!.values()) {
-            const user = await Database.get("SELECT * FROM Users WHERE DiscordID = ?", [member.id]);
-            if (!user) {
-                not_found.push(`- ${member.displayName} - ${member.id}`);
-                continue;
-            }
-            const year = parseInt(user.Matricula) + 1;
-
-            await Database.run(query, [year, member.id]).then(async () => {
-                await member.roles.remove(Constants.ROLES.ALUVIAO);
-                await member.roles.add(Constants.ROLES.VETERANO);
-                if (year <= 5)
-                    await Utils.updateNickname(member);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }).catch((error) => {
-                processing_errors.push(`- ${member.displayName} - ${member.id} - ${error}`);
-            });
-        }
-
-        if (not_found.length === 0 && processing_errors.length === 0) {
-            await interaction.editReply({ content: "Operation finished successfully." });
+        const cfRole = await interaction.guild?.roles.fetch(Constants.ROLES.COMISSAO_DE_FAINA);
+        if (!cfRole) {
+            await interaction.editReply({ content: "Could not find Comissão de Faina role." });
             return;
         }
 
-        let message = "";
-        if (not_found.length > 0)
-            message += `## Users not found on the database:\n${not_found.join("\n")}\n\n`;
-        if (processing_errors.length > 0)
-            message += `## Errors processing users:\n${processing_errors.join("\n")}`;
+        const requiredVotes = Math.ceil(cfRole.members.size / 3);
+        const votes = `0/${requiredVotes}`;
 
-        const messageToSend: InteractionReplyOptions = {
-            content: "Operation finished with errors.",
-            ephemeral: true,
-            files: [{
-                attachment: Buffer.from(message),
-                name: "errors.md"
-            }]
+        const newButton = new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId("updateMatricula-")
+                    .setLabel(`Aprovar ${votes}`)
+                    .setStyle(ButtonStyle.Success)
+                    .setEmoji("✅")
+            );
+        
+        const message: InteractionReplyOptions = {
+            content: `Votação para atualização de matrículas iniciada por ${interaction.user}. Aprovações necessárias: ${requiredVotes}`,
+            components: [newButton]
         }
 
-        await interaction.editReply(messageToSend);
+        await interaction.editReply(message);
     }
 }
