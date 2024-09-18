@@ -85,7 +85,7 @@ export default class AcceptVerificationModal extends Modal {
                 .setTitle("Verificação Aceite")
                 .setColor(Constants.EMBED_COLORS.ACCEPTED)
                 .setDescription(`O teu pedido de verificação foi aceite!\nBem-vindo ${interaction.customId.split("-")[1] === "1" ? "veterano" : "aluvião"}!`);
-            await user.send({ embeds: [dmEmbed] });
+            await user.send({ embeds: [dmEmbed] }).catch(() => {});
         }
 
         await interaction.editReply({ content: `Verificação aceite!` });

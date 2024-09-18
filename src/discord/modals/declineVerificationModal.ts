@@ -61,7 +61,7 @@ export default class AcceptVerificationModal extends Modal {
                     name: "Motivo",
                     value: reason.value
                 });
-            await user.send({ embeds: [dmEmbed] });
+            await user.send({ embeds: [dmEmbed] }).catch(() => {});
         }
 
         await interaction.editReply({ content: `Verificação rejeitada!` });
