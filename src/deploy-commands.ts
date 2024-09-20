@@ -93,6 +93,10 @@ const guild_commands = [
         .addUserOption(option => option.setName('utilizador').setDescription('Utilizador a consultar').setRequired(true))
         .setDefaultMemberPermissions(0),
 
+    new SlashCommandBuilder().setName('find-user').setDescription('Procura utilizadores')
+        .addStringOption(option => option.setName('query').setDescription('Query a procurar (número mecanográfico ou parte do nome)').setRequired(true))
+        .setDefaultMemberPermissions(0),
+
     new ContextMenuCommandBuilder().setName('Completar faina').setType(ApplicationCommandType.User)
         .setDefaultMemberPermissions(0).setDMPermission(false),
 
