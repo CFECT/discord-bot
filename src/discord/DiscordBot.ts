@@ -1,5 +1,5 @@
 import { readdirSync } from "fs";
-import { ActivityType, Client, IntentsBitField } from 'discord.js';
+import { ActivityType, Client, IntentsBitField, Partials } from 'discord.js';
 import MentionableSelectMenuRegistry from "./registry/MentionableSelectMenuRegistry";
 import UserContextMenuRegistry from "./registry/UserContextMenuRegistry";
 import CommandRegistry from "./registry/CommandRegistry";
@@ -13,8 +13,19 @@ class DiscordBot {
     private client: Client;
 
     constructor() {
+        const flags = IntentsBitField.Flags
         this.client = new Client({
-            intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMembers]
+            intents: [
+                flags.Guilds,
+                flags.GuildMembers,
+                flags.MessageContent,
+                flags.GuildMessages,
+                flags.DirectMessages
+            ],
+            partials: [
+                Partials.Channel,
+                Partials.Message
+            ]
         });
     }
 
