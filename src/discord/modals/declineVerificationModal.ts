@@ -19,6 +19,10 @@ export default class AcceptVerificationModal extends Modal {
         await interaction.deferReply({ ephemeral: true });
 
         const verification = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[1]]);
+        if (!verification) {
+            await interaction.editReply({ content: "Não foi possível encontrar o pedido de verificação." });
+            return;
+        }
         const discordId = verification.DiscordID;
         if (!discordId) {
             await interaction.editReply({ content: `Não foi possível encontrar o utilizador.` });
