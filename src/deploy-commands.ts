@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const token = process.env.DISCORD_BOT_TOKEN;
 const clientId = process.env.CLIENT_ID;
-const guildId = process.env.COMMANDS_GUILD_ID;
+const cfectGuildId = process.env.COMMANDS_GUILD_ID;
 
 if (!token || !clientId) {
     console.error("Missing environment variables. Please check your .env file.");
@@ -12,8 +12,6 @@ if (!token || !clientId) {
 }
 
 const global_commands = [
-    new SlashCommandBuilder().setName('ping').setDescription('Check the bot ping'),
-
     new SlashCommandBuilder().setName('relembrar').setDescription('Relembrar-te de algo')
         .addStringOption(option => option.setName('time').setDescription('Tempo para relembrar-te').setRequired(true))
         .addStringOption(option => option.setName('message').setDescription('Mensagem a relembrar-te').setRequired(true))
@@ -41,7 +39,7 @@ const global_commands = [
         .setDefaultMemberPermissions(0),
 ].map(command => command.toJSON());
 
-const guild_commands = [
+const cfect_commands = [
     new SlashCommandBuilder().setName('nome-de-faina').setDescription('Efetua o pedido de mudança de nome de faina no servidor')
         .addStringOption(option => option.setName('nome').setDescription('Novo nome de faina').setRequired(true)),
 
@@ -102,6 +100,12 @@ const guild_commands = [
 
     new ContextMenuCommandBuilder().setName('Número de aluvião').setType(ApplicationCommandType.User)
         .setDefaultMemberPermissions(0).setDMPermission(false),
+
+    new ContextMenuCommandBuilder().setName('Editar utilizador').setType(ApplicationCommandType.User)
+        .setDefaultMemberPermissions(0).setDMPermission(false),
+
+    new ContextMenuCommandBuilder().setName('Informações do utilizador').setType(ApplicationCommandType.User)
+        .setDefaultMemberPermissions(0).setDMPermission(false),
 ].map(command => command.toJSON());
 
 const rest = new REST({ version: '10' }).setToken(token!);
@@ -110,8 +114,8 @@ rest.put(Routes.applicationCommands(clientId!), { body: global_commands })
     .then((data: any) => console.log(`Successfully registered ${data.length} global application commands.`))
     .catch(console.error);
 
-if (guildId) {
-    rest.put(Routes.applicationGuildCommands(clientId!, guildId), { body: guild_commands })
-    .then((data: any) => console.log(`Successfully registered ${data.length} application commands on guild ${guildId}.`))
+if (cfectGuildId) {
+    rest.put(Routes.applicationGuildCommands(clientId!, cfectGuildId), { body: cfect_commands })
+    .then((data: any) => console.log(`Successfully registered ${data.length} application commands on guild ${cfectGuildId}.`))
     .catch(console.error);
 }
