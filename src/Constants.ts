@@ -29,6 +29,12 @@ class Constants {
     };
 
     static VERIFICATION_CHANNEL_ID = process.env.VERIFICATIONS_CHANNEL_ID as string;
+    static DMS_CHANNEL_ID = process.env.DMS_CHANNEL_ID as string;
+
+    static BACKUPS = {
+        INTERVAL_MINUTES: parseInt(process.env.BACKUP_INTERVAL_MINUTES as string),
+        CHANNEL_ID: process.env.BACKUP_CHANNEL_ID as string
+    }
 
     static EMBED_COLORS: EmbedColorsType = {
         ACCEPTED: "#00FF00",

@@ -32,10 +32,9 @@ export default class BoteCommand extends Command {
                 })
                 .setTimestamp(bote.Time);
 
-            const jointUploader = await Database.get("SELECT * FROM Botes LEFT OUTER JOIN Users ON UploaderID=DiscordID");
+            const uploader = await interaction.guild?.members.fetch(bote.UploaderID).catch(() => null);
 
-            if (jointUploader.DiscordID) {
-                const uploader = await interaction.guild?.members.fetch(jointUploader.DiscordID)!;
+            if (uploader) {
                 embed.setFooter({
                     text: "Registado por " + uploader.displayName,
                     iconURL: uploader.user.displayAvatarURL()

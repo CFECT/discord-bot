@@ -13,16 +13,11 @@ export default class RelembrarCommand extends Command {
 
         const timeInput = interaction.options.getString("time", true);
         const messageInput = interaction.options.getString("message", true);
-        const roleInput = interaction.options.getRole("role", false);
+        const channelInput = interaction.options.getChannel("channel");
 
         const userId = interaction.user.id;
-        const member = await interaction.guild?.members.fetch(userId);
-        if (roleInput && !member?.permissions.has("MentionEveryone")) {
-            await interaction.editReply("Não tens permissões para mencionar cargos.");
-            return;
-        }
         const guildId = interaction.guildId!;
-        const channelId = interaction.channelId;
+        const channelId = channelInput?.id || interaction.channelId;
         const time = new Duration(timeInput).fromNow;
 
         if (isNaN(time.getTime()) || time.getTime() <= Date.now()) {

@@ -20,6 +20,10 @@ export default class AcceptVerificationModal extends Modal {
         await interaction.deferReply({ ephemeral: true });
 
         const verification = await Database.get("SELECT * FROM Verifications WHERE ID = ?", [interaction.customId.split("-")[2]]);
+        if (!verification) {
+            await interaction.editReply({ content: "Não foi possível encontrar o pedido de verificação." });
+            return;
+        }
         const discordId = verification.DiscordID;
         if (!discordId) {
             await interaction.editReply({ content: "Não foi possível encontrar o utilizador." });
@@ -85,7 +89,7 @@ export default class AcceptVerificationModal extends Modal {
                 .setTitle("Verificação Aceite")
                 .setColor(Constants.EMBED_COLORS.ACCEPTED)
                 .setDescription(`O teu pedido de verificação foi aceite!\nBem-vindo ${interaction.customId.split("-")[1] === "1" ? "veterano" : "aluvião"}!`);
-            await user.send({ embeds: [dmEmbed] });
+            await user.send({ embeds: [dmEmbed] }).catch(() => {});
         }
 
         await interaction.editReply({ content: `Verificação aceite!` });
