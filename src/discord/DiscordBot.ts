@@ -7,6 +7,7 @@ import ButtonRegistry from "./registry/ButtonRegistry";
 import ModalRegistry from "./registry/ModalRegistry";
 import Database from "../Database";
 import Reminders from "./managers/Reminders";
+import Backups from "./managers/Backups";
 
 class DiscordBot {
     private client: Client;
