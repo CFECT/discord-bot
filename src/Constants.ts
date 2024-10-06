@@ -12,7 +12,11 @@ type RanksType = {
 
 type EmbedColorsType = {
     ACCEPTED: ColorResolvable,
-    DENIED: ColorResolvable
+    DENIED: ColorResolvable,
+
+    UPDATE_IN_PROGRESS: ColorResolvable,
+    UPDATE_COMPLETED_WITH_NO_ERRORS: ColorResolvable,
+    UPDATE_COMPLETED_WITH_ERRORS: ColorResolvable
 }
 
 class Constants {
@@ -35,6 +39,10 @@ class Constants {
     static EMBED_COLORS: EmbedColorsType = {
         ACCEPTED: "#00FF00",
         DENIED: "#FF0000",
+        
+        UPDATE_IN_PROGRESS: "#00bbff",
+        UPDATE_COMPLETED_WITH_NO_ERRORS: "#00FF00",
+        UPDATE_COMPLETED_WITH_ERRORS: "#ff9900"
     }
 
     static ROLES = {

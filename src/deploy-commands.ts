@@ -91,6 +91,17 @@ const cfect_commands = [
         .addUserOption(option => option.setName('utilizador').setDescription('Utilizador a consultar').setRequired(true))
         .setDefaultMemberPermissions(0),
 
+    new SlashCommandBuilder().setName('numero-aluviao-bulk').setDescription('Define o número de aluvião de vários utilizadores')
+        .addAttachmentOption(option => option.setName('ficheiro').setDescription('Ficheiro CSV com os números mecanográficos e de aluvião').setRequired(true))
+        .setDefaultMemberPermissions(0),
+
+    new SlashCommandBuilder().setName('completar-faina-bulk').setDescription('Completa a faina de vários utilizadores')
+        .addAttachmentOption(option => option.setName('ficheiro').setDescription('Ficheiro CSV com os números mecanográficos').setRequired(true))
+        .setDefaultMemberPermissions(0),
+
+    new SlashCommandBuilder().setName('update-matriculas').setDescription('Atualiza a matrícula de todos os utilizadores')
+        .setDefaultMemberPermissions(0),
+
     new SlashCommandBuilder().setName('find-user').setDescription('Procura utilizadores')
         .addStringOption(option => option.setName('query').setDescription('Query a procurar (número mecanográfico ou parte do nome)').setRequired(true))
         .setDefaultMemberPermissions(0),
