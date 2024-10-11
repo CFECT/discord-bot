@@ -13,7 +13,7 @@ export default class DeclineNameChange extends Button {
         const id = parseInt(interaction.customId.split("-")[1]);
         const nameChange = await Database.get("SELECT * FROM NameChanges WHERE ID = ?", [id]);
         if (!nameChange) {
-            await interaction.channel?.send("Pedido de mudança de nome não encontrado!");
+            await interaction.followUp({ content: "Pedido de mudança de nome não encontrado!", ephemeral: true });
             return;
         }
         const user = await interaction.guild?.members.fetch(nameChange.DiscordID);
