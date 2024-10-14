@@ -24,8 +24,8 @@ export default class EditUserCommand extends Command {
         }
 
         const modal = new ModalBuilder()
-        .setTitle("Editar Utilizador")
-        .setCustomId("editUserModal-" + discordId);
+            .setTitle("Editar Utilizador")
+            .setCustomId("editUserModal-" + discordId);
 
         const inputNome = new TextInputBuilder()
             .setLabel("Nome")
