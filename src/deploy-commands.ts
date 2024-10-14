@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const token = process.env.DISCORD_BOT_TOKEN;
 const clientId = process.env.CLIENT_ID;
-const cfectGuildId = process.env.COMMANDS_GUILD_ID;
+const guildId = process.env.GUILD_ID;
 
 if (!token || !clientId) {
     console.error("Missing environment variables. Please check your .env file.");
@@ -125,8 +125,8 @@ rest.put(Routes.applicationCommands(clientId!), { body: global_commands })
     .then((data: any) => console.log(`Successfully registered ${data.length} global application commands.`))
     .catch(console.error);
 
-if (cfectGuildId) {
-    rest.put(Routes.applicationGuildCommands(clientId!, cfectGuildId), { body: cfect_commands })
-    .then((data: any) => console.log(`Successfully registered ${data.length} application commands on guild ${cfectGuildId}.`))
+if (guildId) {
+    rest.put(Routes.applicationGuildCommands(clientId!, guildId), { body: cfect_commands })
+    .then((data: any) => console.log(`Successfully registered ${data.length} application commands on guild ${guildId}.`))
     .catch(console.error);
 }

@@ -4,7 +4,8 @@ import Constants from '../../Constants';
 export async function run(client: Client, message: Message) {
     if (message.author.bot) return;
     if (message.channel.isDMBased()) handleDmMessage(client, message);
-    if (message.reference && message.channel.id === '1287176557814878208') handleDmsChannelMessage(client, message);
+    if (message.reference && message.channel.id === Constants.DMS_CHANNEL_ID) handleDmsChannelReplyMessage(client, message);
+    if (message.channel.id === Constants.DMS_CHANNEL_ID) handleDmsChannelMessage(client, message);
 }
 
 async function handleDmMessage(client: Client, message: Message) {
@@ -40,7 +41,7 @@ async function handleDmMessage(client: Client, message: Message) {
     await dms_channel.send({ embeds: [embed] });
 }
 
-async function handleDmsChannelMessage(client: Client, message: Message) {
+async function handleDmsChannelReplyMessage(client: Client, message: Message) {
     const referenceMessage = await message.channel.messages.fetch(message.reference!.messageId as string);
     if (!referenceMessage.author.bot) return;
 
@@ -68,4 +69,29 @@ async function handleDmsChannelMessage(client: Client, message: Message) {
         .setTimestamp(Date.now());
 
     await originalMessage.reply({ embeds: [embed] });
+}
+
+async function handleDmsChannelMessage(client: Client, message: Message) {
+    if (message.author.bot) return;
+
+    if (message.content.startsWith('<@')) {
+        const mentionedUser = message.mentions.users.first();
+        if (!mentionedUser) return;
+
+        const content = message.content.split(' ').slice(1).join(' ');
+
+        const embed = new EmbedBuilder()
+            .setAuthor({
+                name: `${message.author.tag} (${message.author.id})`,
+                iconURL: message.author.displayAvatarURL()
+            })
+            .setColor("#0099ff")
+            .setDescription(content)
+            .setFooter({
+                text: message.id
+            })
+            .setTimestamp(Date.now());
+
+        await mentionedUser.send({ embeds: [embed] });
+    }
 }
